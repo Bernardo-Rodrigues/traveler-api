@@ -1,0 +1,142 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int    @id @default(autoincrement())
+  username    String @unique
+  email       String @unique
+  password    String 
+  avatarId    Int
+
+  avatar Avatar @relation(fields: [avatarId], references: [id])
+
+  travels Travel[]
+  reviews Review[]
+  wishlists Wishlist[]
+  achievementsUsers AchievementUser[] 
+
+  @@map("users")
+}
+
+model Avatar {
+  id          Int    @id @default(autoincrement())
+  imageLink   String @unique
+
+  users User[]
+
+  @@map("avatars")
+}
+
+model Travel {
+  id          Int    @id @default(autoincrement())
+  startDate   DateTime 
+  endDate     DateTime 
+  userId      Int 
+  destinyId   Int
+
+  user User @relation(fields: [userId], references: [id])
+  destiny Destiny @relation(fields: [destinyId], references: [id])
+
+  @@map("travels")
+}
+
+model Review {
+  id          Int    @id @default(autoincrement())
+  note        Int
+  userId      Int
+  destinyId   Int
+
+  user User @relation(fields: [userId], references: [id])
+  destiny Destiny @relation(fields: [destinyId], references: [id])
+
+  @@map("reviews")
+}
+
+model Wishlist {
+  id          Int    @id @default(autoincrement())
+  userId      Int
+  destinyId   Int
+
+  user User @relation(fields: [userId], references: [id])
+  destiny Destiny @relation(fields: [destinyId], references: [id])
+
+  @@map("wishlists")
+}
+
+model Destiny {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String
+  imageLink   String  @unique
+
+  travels Travel[]
+  reviews Review[]
+  wishlists Wishlist[]
+  tips Tip[]
+  trips Trip[]
+
+  @@map("destinies")
+}
+
+model Tip {
+  id          Int    @id @default(autoincrement())
+  destinyId   Int
+  description String
+
+  destiny Destiny @relation(fields: [destinyId], references: [id])
+
+  @@map("tips")
+}
+
+model Trip {
+  id            Int    @id @default(autoincrement())
+  destinyId     Int
+  achievementId Int
+
+  destiny Destiny @relation(fields: [destinyId], references: [id])
+  achievement Achievement @relation(fields: [achievementId], references: [id])
+
+  @@map("trips")
+}
+
+model Achievement {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String
+
+  trips Trip[]
+  accumulators Accumulator[]
+  achievementsUsers AchievementUser[] 
+
+  @@map("achievements")
+}
+
+model Accumulator {
+  id            Int    @id @default(autoincrement())
+  achievementId Int
+  count         Int
+
+  achievement Achievement @relation(fields: [achievementId], references: [id])
+
+  @@map("accumulators")
+}
+
+model AchievementUser {
+  id            Int    @id @default(autoincrement())
+  userId        Int
+  achievementId Int
+
+  user User @relation(fields: [userId], references: [id])
+  achievement Achievement @relation(fields: [achievementId], references: [id])
+
+  @@map("achievementsUsers")
+}
