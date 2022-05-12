@@ -1,0 +1,17 @@
+version: "3"
+services:
+  db:
+    image: postgres:13
+    container_name: db
+    restart: always
+    env_file:
+      - .env.test
+
+  node_app:
+    container_name: node_app
+    build: .
+    depends_on:
+      - db
+    env_file:
+      - .env.test
+    command: "npm run test"
