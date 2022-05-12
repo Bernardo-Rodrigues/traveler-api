@@ -13,6 +13,8 @@ jobs:
           envkey_POSTGRES_PASSWORD: "123456"
           envkey_POSTGRES_DB: "traveler_test"
           envkey_DATABASE_URL: "postgres://postgres:123456@db:5432/traveler_test"
+          envkey_SECRET_CRYPTR: "icsfuangfcyu"
+          envkey_SECRET_JWT: "gsagdsggfdsfgs"
           file_name: .env.test
       - name: Run tests
         run: docker-compose -f docker-compose-test.yml up --build
