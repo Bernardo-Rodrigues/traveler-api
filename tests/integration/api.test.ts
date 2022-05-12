@@ -18,6 +18,9 @@ describe("#Api - test suit for api integrations", () => {
   beforeAll(async () => {
     seedElements = await seed();
   });
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
 
   it("POST /users/sign-up - should create a new user and answer with status 201", async () => {
     const user = createUser(seedElements.avatar.id);

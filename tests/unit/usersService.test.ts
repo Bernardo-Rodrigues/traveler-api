@@ -3,10 +3,14 @@ import usersRepository from "../../src/repositories/usersRepository.js";
 import { conflict } from "../../src/errors/index";
 import usersService from "../../src/services/usersService.js";
 import { createUser } from "../factories/usersFactory.js";
+import { prisma } from "../../src/database.js";
 
 const service = new usersService();
 
 describe("#Users Service - test suit for edge processing", () => {
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
   it("#register - should throw a conflict error given an already existing user with the same name", () => {
     const userData = createUser();
     jest
