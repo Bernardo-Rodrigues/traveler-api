@@ -1,10 +1,9 @@
-import { conflict } from "../errors/index.js";
+import { conflict, unauthorized } from "../errors/index.js";
 import { UserInsertData } from "../repositories/usersRepository.js";
 import userRepository from "../repositories/usersRepository.js";
 import config from "../config.js";
-import Cryptr from "cryptr";
-
-const cryptr = new Cryptr(config.secretCryptr);
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export default class usersService {
   async register(userData: UserInsertData) {
@@ -14,10 +13,33 @@ export default class usersService {
       (await userRepository.findByName(username));
     if (user) throw conflict("User already registered");
 
-    const encryptedPassword = cryptr.encrypt(password);
+    const hashedPassword = bcrypt.hashSync(password, 12);
     await userRepository.create({
       ...userData,
-      password: encryptedPassword,
+      password: hashedPassword,
     });
+  }
+
+  async login({ email, password }) {
+    const userId = await this.#validateUserLogin(email, password);
+    const token = this.#createJWTToken(userId);
+
+    return { token };
+  }
+
+  async #validateUserLogin(email: string, password: string) {
+    const user = await userRepository.findByEmail(email);
+
+    if (!user || !bcrypt.compareSync(password, user.password))
+      throw unauthorized("User does not exist");
+
+    return user.id;
+  }
+
+  #createJWTToken(userId: number) {
+    const jwtConfiguration = { expiresIn: 60 * 60 };
+    const jwtData = { userId };
+    const token = jwt.sign(jwtData, config.secretJWT, jwtConfiguration);
+    return token;
   }
 }
