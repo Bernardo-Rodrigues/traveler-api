@@ -1,11 +1,11 @@
 import { prisma } from "../database.js";
 
 async function list() {
-  return await prisma.avatar.findMany();
+  return await prisma.destiny.findMany();
 }
 
 async function truncate() {
-  return await prisma.$executeRaw`TRUNCATE TABLE avatars CASCADE`;
+  return await prisma.$executeRaw`TRUNCATE TABLE destinies CASCADE`;
 }
 
 export default { list, truncate };
