@@ -42,5 +42,7 @@ describe("#Api - test suit for api integrations", () => {
       .send({ email: user.email, password: user.password });
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("token");
+    expect(response.body).toHaveProperty("imageLink");
+    expect(response.body).toHaveProperty("username");
   });
 });

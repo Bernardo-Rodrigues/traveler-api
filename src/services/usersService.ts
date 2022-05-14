@@ -21,10 +21,10 @@ export default class usersService {
   }
 
   async login({ email, password }) {
-    const userId = await this.#validateUserLogin(email, password);
-    const token = this.#createJWTToken(userId);
+    const user = await this.#validateUserLogin(email, password);
+    const token = this.#createJWTToken(user.id);
 
-    return { token };
+    return { token, username: user.username, imageLink: user.avatar.imageLink };
   }
 
   async #validateUserLogin(email: string, password: string) {
@@ -33,7 +33,7 @@ export default class usersService {
     if (!user || !bcrypt.compareSync(password, user.password))
       throw unauthorized("User does not exist");
 
-    return user.id;
+    return user;
   }
 
   #createJWTToken(userId: number) {

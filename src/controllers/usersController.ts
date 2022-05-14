@@ -15,7 +15,7 @@ export async function register(req: Request, res: Response) {
 export async function login(req: Request, res: Response) {
   const userData = req.body;
 
-  const token = await service.login(userData);
+  const authData = await service.login(userData);
 
-  res.send(token);
+  res.send(authData);
 }

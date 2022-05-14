@@ -13,6 +13,13 @@ async function create(user: UserInsertData) {
 
 async function findByEmail(email: string) {
   const user = await prisma.user.findUnique({
+    include: {
+      avatar: {
+        select: {
+          imageLink: true,
+        },
+      },
+    },
     where: {
       email,
     },
