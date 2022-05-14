@@ -38,8 +38,13 @@ async function findByName(username: string) {
   return user;
 }
 
+async function truncate() {
+  return await prisma.$executeRaw`TRUNCATE TABLE users CASCADE`;
+}
+
 export default {
   create,
   findByEmail,
   findByName,
+  truncate,
 };

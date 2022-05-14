@@ -78,6 +78,7 @@ model Destiny {
   name        String  @unique
   description String
   imageLink   String  @unique
+  localization String
 
   travels Travel[]
   reviews Review[]
