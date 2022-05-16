@@ -38,6 +38,16 @@ async function findByName(username: string) {
   return user;
 }
 
+async function findById(id: number) {
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  return user;
+}
+
 async function truncate() {
   return await prisma.$executeRaw`TRUNCATE TABLE users CASCADE`;
 }
@@ -46,5 +56,6 @@ export default {
   create,
   findByEmail,
   findByName,
+  findById,
   truncate,
 };

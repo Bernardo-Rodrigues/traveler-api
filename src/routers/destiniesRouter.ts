@@ -10,5 +10,15 @@ destiniesRouter.get(
   validateTokenMiddleware,
   controller.find
 );
+destiniesRouter.post(
+  "/destinies/:id/favorite",
+  validateTokenMiddleware,
+  controller.favorite
+);
+destiniesRouter.post(
+  "/destinies/:id/unfavorite",
+  validateTokenMiddleware,
+  controller.unfavorite
+);
 
 export default destiniesRouter;

@@ -4,7 +4,7 @@ async function list() {
   return await prisma.destiny.findMany();
 }
 
-async function find(name: string) {
+async function get(name: string) {
   return await prisma.destiny.findUnique({
     include: {
       descriptions: true,
@@ -15,8 +15,16 @@ async function find(name: string) {
   });
 }
 
+async function findById(id: number) {
+  return await prisma.destiny.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
 async function truncate() {
   return await prisma.$executeRaw`TRUNCATE TABLE destinies CASCADE`;
 }
 
-export default { list, find, truncate };
+export default { list, get, truncate, findById };
