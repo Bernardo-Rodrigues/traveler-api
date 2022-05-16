@@ -34,7 +34,6 @@ export default async function seed() {
     update: {},
     create: {
       name: faker.lorem.word(),
-      description: faker.lorem.words(5),
       localization: faker.lorem.word(),
       imageLink: faker.internet.url(),
     },

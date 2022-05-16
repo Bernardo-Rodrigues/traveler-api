@@ -76,7 +76,6 @@ model Wishlist {
 model Destiny {
   id          Int     @id @default(autoincrement())
   name        String  @unique
-  description String
   imageLink   String  @unique
   localization String
 
@@ -85,8 +84,20 @@ model Destiny {
   wishlists Wishlist[]
   tips Tip[]
   trips Trip[]
+  descriptions Description[]
 
   @@map("destinies")
+}
+
+model Description {
+  id          Int     @id @default(autoincrement())
+  destinyId   Int
+  text        String
+  type        String  
+
+  destiny Destiny @relation(fields: [destinyId], references: [id])
+
+  @@map("descriptions")
 }
 
 model Tip {

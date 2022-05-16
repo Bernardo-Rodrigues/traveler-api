@@ -45,9 +45,7 @@ describe("#Api - test suit for api integrations", () => {
       .post("/users/sign-in")
       .send({ email: user.email, password: user.password });
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty("token");
-    expect(response.body).toHaveProperty("imageLink");
-    expect(response.body).toHaveProperty("username");
+    expect(response.body).not.toBeNull();
   });
   it("GET /avatars - should answer with status 200 and return an array of avatars", async () => {
     const response = await agent.get("/avatars");
@@ -59,5 +57,14 @@ describe("#Api - test suit for api integrations", () => {
     const response = await agent.get("/destinies").set("Authorization", token);
     expect(response.status).toBe(200);
     expect(response.body.length).toBeGreaterThan(0);
+  });
+  it("GET /destinies/:name - should answer with status 200 and return a destination given a valid auth token and destination name", async () => {
+    const token = jwt.sign({}, config.secretJWT);
+    const destinyName = seedElements.destiny.name;
+    const response = await agent
+      .get(`/destinies/${destinyName}`)
+      .set("Authorization", token);
+    expect(response.status).toBe(200);
+    expect(response.body).not.toBeNull();
   });
 });
