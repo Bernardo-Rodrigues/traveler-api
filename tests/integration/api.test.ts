@@ -17,6 +17,7 @@ interface SeedElements {
   avatar: Avatar;
   user: User;
   destiny: Destiny;
+  knownDestiny: Destiny;
 }
 
 let seedElements: SeedElements;
@@ -60,11 +61,56 @@ describe("#Api - test suit for api integrations", () => {
   });
   it("GET /destinies/:name - should answer with status 200 and return a destination given a valid auth token and destination name", async () => {
     const token = jwt.sign({}, config.secretJWT);
-    const destinyName = seedElements.destiny.name;
+    const knownDestinyName = seedElements.knownDestiny.name;
     const response = await agent
-      .get(`/destinies/${destinyName}`)
+      .get(`/destinies/${knownDestinyName}`)
       .set("Authorization", token);
     expect(response.status).toBe(200);
     expect(response.body).not.toBeNull();
+  });
+  it("GET /destinies/favorites - should answer with status 200 and return an array of destinations given a valid auth token", async () => {
+    const userId = seedElements.user.id;
+    const token = jwt.sign({ userId }, config.secretJWT);
+    const response = await agent
+      .get(`/destinies/favorites`)
+      .set("Authorization", token);
+    expect(response.status).toBe(200);
+    expect(response.body).not.toBeNull();
+  });
+  it("POST /destinies/:id/favorite - should answer with status 200 and create a relation of favorite between the user and the destination given a valid auth token and destination id", async () => {
+    const destinyId = seedElements.destiny.id;
+    const userId = seedElements.user.id;
+    const token = jwt.sign({ userId }, config.secretJWT);
+    const response = await agent
+      .post(`/destinies/${destinyId}/favorite`)
+      .set("Authorization", token);
+    const favorite = await prisma.favorite.findUnique({
+      where: {
+        favoriteRelation: {
+          userId,
+          destinyId,
+        },
+      },
+    });
+    expect(favorite).not.toBeNull();
+    expect(response.status).toBe(200);
+  });
+  it("POST /destinies/:id/unfavorite - should answer with status 200 and remove the relation of favorite between the user and the destination given a valid auth token and destination id", async () => {
+    const destinyId = seedElements.destiny.id;
+    const userId = seedElements.user.id;
+    const token = jwt.sign({ userId }, config.secretJWT);
+    const response = await agent
+      .post(`/destinies/${destinyId}/unfavorite`)
+      .set("Authorization", token);
+    const favorite = await prisma.favorite.findUnique({
+      where: {
+        favoriteRelation: {
+          userId,
+          destinyId,
+        },
+      },
+    });
+    expect(favorite).toBeNull();
+    expect(response.status).toBe(200);
   });
 });

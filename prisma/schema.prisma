@@ -22,7 +22,7 @@ model User {
 
   travels Travel[]
   reviews Review[]
-  wishlists Wishlist[]
+  favorites Favorite[]
   achievementsUsers AchievementUser[] 
 
   @@map("users")
@@ -39,8 +39,8 @@ model Avatar {
 
 model Travel {
   id          Int    @id @default(autoincrement())
-  startDate   DateTime 
-  endDate     DateTime 
+  startDate   DateTime?
+  endDate     DateTime?
   userId      Int 
   destinyId   Int
 
@@ -62,15 +62,15 @@ model Review {
   @@map("reviews")
 }
 
-model Wishlist {
-  id          Int    @id @default(autoincrement())
+model Favorite {
   userId      Int
   destinyId   Int
 
   user User @relation(fields: [userId], references: [id])
   destiny Destiny @relation(fields: [destinyId], references: [id])
 
-  @@map("wishlists")
+  @@unique(fields: [userId, destinyId], name:"favoriteRelation")
+  @@map("favorites")
 }
 
 model Destiny {
@@ -81,7 +81,7 @@ model Destiny {
 
   travels Travel[]
   reviews Review[]
-  wishlists Wishlist[]
+  favorites Favorite[]
   tips Tip[]
   trips Trip[]
   descriptions Description[]
