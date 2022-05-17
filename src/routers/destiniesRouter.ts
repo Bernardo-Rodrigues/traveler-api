@@ -11,6 +11,11 @@ destiniesRouter.get(
   controller.listByFavorites
 );
 destiniesRouter.get(
+  "/destinies/top",
+  validateTokenMiddleware,
+  controller.listTop
+);
+destiniesRouter.get(
   "/destinies/:name",
   validateTokenMiddleware,
   controller.find

@@ -4,7 +4,6 @@ import { faker } from "@faker-js/faker";
 import bcrypt from "bcrypt";
 
 export default async function seed() {
-  const password = faker.lorem.word();
   const avatar: Avatar = await prisma.avatar.upsert({
     where: {
       imageLink: faker.internet.url(),
@@ -14,6 +13,7 @@ export default async function seed() {
       imageLink: faker.internet.url(),
     },
   });
+  const password = faker.lorem.word();
   const user = await prisma.user.upsert({
     where: {
       username: faker.lorem.word(),
@@ -26,6 +26,7 @@ export default async function seed() {
       password: bcrypt.hashSync(password, 12),
     },
   });
+  user.password = password;
 
   const destiny: Destiny = await prisma.destiny.upsert({
     where: {
@@ -84,11 +85,9 @@ export default async function seed() {
     create: {
       userId: user.id,
       destinyId: knownDestiny.id,
-      note: 5,
+      note: 3,
     },
   });
-
-  user.password = password;
 
   return {
     avatar,

@@ -17,6 +17,12 @@ export async function listByFavorites(req: Request, res: Response) {
   res.send(favorites);
 }
 
+export async function listTop(req: Request, res: Response) {
+  const destinations = await service.listTop();
+
+  res.send(destinations);
+}
+
 export async function find(req: Request, res: Response) {
   const { userId } = res.locals.user;
   const { name } = req.params;
