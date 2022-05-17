@@ -77,6 +77,16 @@ describe("#Api - test suit for api integrations", () => {
     expect(response.status).toBe(200);
     expect(response.body).not.toBeNull();
   });
+  it("GET /destinies/top - should answer with status 200 and return an array of destinations ordered by score given a valid auth token", async () => {
+    const token = jwt.sign({}, config.secretJWT);
+    const response = await agent
+      .get(`/destinies/top`)
+      .set("Authorization", token);
+    const [first, second] = response.body;
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBeGreaterThan(0);
+    expect(first.score).toBeGreaterThanOrEqual(second.score);
+  });
   it("POST /destinies/:id/favorite - should answer with status 200 and create a relation of favorite between the user and the destination given a valid auth token and destination id", async () => {
     const destinyId = seedElements.destiny.id;
     const userId = seedElements.user.id;

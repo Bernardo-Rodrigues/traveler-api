@@ -69,4 +69,10 @@ export default class DestiniesService {
     }));
     return destinies;
   }
+  async listTop() {
+    const destinies = await this.list();
+    const topDestinies = destinies.sort((a, b) => b.score - a.score);
+
+    return topDestinies;
+  }
 }
