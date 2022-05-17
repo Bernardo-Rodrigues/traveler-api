@@ -14,4 +14,4 @@ services:
       - db
     env_file:
       - .env.test
-    command: "npm run test"
+    command: "npm run test:coverage"

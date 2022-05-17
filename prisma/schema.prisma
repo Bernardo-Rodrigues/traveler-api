@@ -39,8 +39,8 @@ model Avatar {
 
 model Travel {
   id          Int    @id @default(autoincrement())
-  startDate   DateTime 
-  endDate     DateTime 
+  startDate   DateTime?
+  endDate     DateTime?
   userId      Int 
   destinyId   Int
 

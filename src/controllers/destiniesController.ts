@@ -9,6 +9,14 @@ export async function list(req: Request, res: Response) {
   res.send(destinies);
 }
 
+export async function listByFavorites(req: Request, res: Response) {
+  const { userId } = res.locals.user;
+
+  const favorites = await service.listFavorites(userId);
+
+  res.send(favorites);
+}
+
 export async function find(req: Request, res: Response) {
   const { userId } = res.locals.user;
   const { name } = req.params;

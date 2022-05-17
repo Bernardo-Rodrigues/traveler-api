@@ -6,6 +6,11 @@ const destiniesRouter = Router();
 
 destiniesRouter.get("/destinies", validateTokenMiddleware, controller.list);
 destiniesRouter.get(
+  "/destinies/favorites",
+  validateTokenMiddleware,
+  controller.listByFavorites
+);
+destiniesRouter.get(
   "/destinies/:name",
   validateTokenMiddleware,
   controller.find
