@@ -1,10 +1,13 @@
-import { notFound } from "../errors/index.js";
+import { badRequest, notFound } from "../errors/index.js";
 import destiniesRepository from "../repositories/destiniesRepository.js";
 import favoritesRepository from "../repositories/favoritesRepository.js";
-import travelsRepository from "../repositories/travelsRepository.js";
+import travelsRepository, {
+  TravelInsertData,
+} from "../repositories/travelsRepository.js";
 import usersRepository from "../repositories/usersRepository.js";
 import reviewsRepository from "../repositories/reviewsRepository.js";
 import { favorite } from "../controllers/destiniesController.js";
+import dayjs from "dayjs";
 
 export default class DestiniesService {
   async list() {
@@ -74,5 +77,20 @@ export default class DestiniesService {
     const topDestinies = destinies.sort((a, b) => b.score - a.score);
 
     return topDestinies;
+  }
+  async addTravel(data: TravelInsertData) {
+    const user = await usersRepository.findById(data.userId);
+    if (!user) throw notFound("User not found");
+    const destination = await destiniesRepository.findById(data.destinyId);
+    if (!destination) throw notFound("Destiny not found");
+
+    const validDates = this.checkDates(data.startDate, data.endDate);
+    if (!validDates) throw badRequest("Dates are invalid");
+
+    await travelsRepository.add(data);
+  }
+
+  checkDates(startDate: Date, endDate: Date) {
+    return !(startDate && dayjs(startDate).isAfter(endDate));
   }
 }

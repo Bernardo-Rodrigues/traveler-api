@@ -8,6 +8,7 @@ import { Avatar, Destiny, User } from ".prisma/client";
 import jwt from "jsonwebtoken";
 import config from "../../src/config.js";
 import TestsService from "../../src/services/testsService.js";
+import dayjs from "dayjs";
 
 const testsService = new TestsService();
 
@@ -87,7 +88,7 @@ describe("#Api - test suit for api integrations", () => {
     expect(response.body.length).toBeGreaterThan(0);
     expect(first.score).toBeGreaterThanOrEqual(second.score);
   });
-  it("POST /destinies/:id/favorite - should answer with status 200 and create a relation of favorite between the user and the destination given a valid auth token and destination id", async () => {
+  it("POST /destinies/:id/favorite - should answer with status 201 and create a relation of favorite between the user and the destination given a valid auth token and destination id", async () => {
     const destinyId = seedElements.destiny.id;
     const userId = seedElements.user.id;
     const token = jwt.sign({ userId }, config.secretJWT);
@@ -103,7 +104,7 @@ describe("#Api - test suit for api integrations", () => {
       },
     });
     expect(favorite).not.toBeNull();
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(201);
   });
   it("POST /destinies/:id/unfavorite - should answer with status 200 and remove the relation of favorite between the user and the destination given a valid auth token and destination id", async () => {
     const destinyId = seedElements.destiny.id;
@@ -122,5 +123,23 @@ describe("#Api - test suit for api integrations", () => {
     });
     expect(favorite).toBeNull();
     expect(response.status).toBe(200);
+  });
+  it("POST /destinies/:id/travel - should answer with status 201 and create a travel given a valid auth token, destination id and dates", async () => {
+    const destinyId = seedElements.destiny.id;
+    const userId = seedElements.user.id;
+    const token = jwt.sign({ userId }, config.secretJWT);
+    const body = { startDate: dayjs(), endDate: dayjs().add(1, "day") };
+    const response = await agent
+      .post(`/destinies/${destinyId}/travel`)
+      .set("Authorization", token)
+      .send(body);
+    const travel = await prisma.travel.findFirst({
+      where: {
+        userId,
+        destinyId,
+      },
+    });
+    expect(travel).not.toBeNull();
+    expect(response.status).toBe(201);
   });
 });

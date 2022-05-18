@@ -30,5 +30,10 @@ destiniesRouter.post(
   validateTokenMiddleware,
   controller.unfavorite
 );
+destiniesRouter.post(
+  "/destinies/:id/travel",
+  validateTokenMiddleware,
+  controller.addTravel
+);
 
 export default destiniesRouter;

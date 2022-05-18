@@ -38,7 +38,7 @@ export async function favorite(req: Request, res: Response) {
 
   await service.favorite(userId, destinationId);
 
-  res.sendStatus(200);
+  res.sendStatus(201);
 }
 
 export async function unfavorite(req: Request, res: Response) {
@@ -48,4 +48,13 @@ export async function unfavorite(req: Request, res: Response) {
   await service.unfavorite(userId, destinationId);
 
   res.sendStatus(200);
+}
+
+export async function addTravel(req: Request, res: Response) {
+  const { userId } = res.locals.user;
+  const destinyId = parseInt(req.params.id);
+
+  await service.addTravel({ ...req.body, userId, destinyId });
+
+  res.sendStatus(201);
 }
