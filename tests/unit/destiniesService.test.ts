@@ -6,13 +6,8 @@ import { prisma } from "../../src/database.js";
 import usersRepository from "../../src/repositories/usersRepository.js";
 import { createUser } from "../factories/usersFactory.js";
 import dayjs from "dayjs";
-import MockDate from "mockdate";
-
-MockDate.set("2000-11-22");
 
 const service = new destinesService();
-
-jest.mock("dayjs", () => jest.fn(() => "2022-12-12"));
 
 describe("#Destinies Service - test suit for edge processing", () => {
   afterAll(async () => {
@@ -82,8 +77,8 @@ describe("#Destinies Service - test suit for edge processing", () => {
       service.addTravel({
         userId: 1,
         destinyId: 1,
-        startDate: dayjs(),
-        endDate: dayjs().add(1, "day"),
+        startDate: dayjs() as unknown as Date,
+        endDate: dayjs().add(1, "day") as unknown as Date,
       })
     ).rejects.toEqual(notFound("User not found"));
   });
@@ -98,8 +93,8 @@ describe("#Destinies Service - test suit for edge processing", () => {
       service.addTravel({
         userId: 1,
         destinyId: 1,
-        startDate: dayjs(),
-        endDate: dayjs().add(1, "day"),
+        startDate: dayjs() as unknown as Date,
+        endDate: dayjs().add(1, "day") as unknown as Date,
       })
     ).rejects.toEqual(notFound("Destiny not found"));
   });
@@ -118,8 +113,8 @@ describe("#Destinies Service - test suit for edge processing", () => {
       service.addTravel({
         userId: 1,
         destinyId: 1,
-        startDate: dayjs(),
-        endDate: dayjs().add(1, "day"),
+        startDate: dayjs() as unknown as Date,
+        endDate: dayjs().add(1, "day") as unknown as Date,
       })
     ).rejects.toEqual(badRequest("Dates are invalid"));
   });
