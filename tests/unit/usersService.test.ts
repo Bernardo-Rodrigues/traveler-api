@@ -20,7 +20,7 @@ describe("#Users Service - test suit for edge processing", () => {
       .mockResolvedValue({ ...userData, id: 1 });
     jest.spyOn(usersRepository, "findByEmail").mockResolvedValue(null);
 
-    expect(service.register(userData)).rejects.toEqual(
+    return expect(service.register(userData)).rejects.toEqual(
       conflict("User already registered")
     );
   });
@@ -32,7 +32,7 @@ describe("#Users Service - test suit for edge processing", () => {
       .spyOn(usersRepository, "findByEmail")
       .mockResolvedValue({ ...userData, id: 1, avatar: { imageLink: "" } });
 
-    expect(service.register(userData)).rejects.toEqual(
+    return expect(service.register(userData)).rejects.toEqual(
       conflict("User already registered")
     );
   });

@@ -142,4 +142,11 @@ describe("#Api - test suit for api integrations", () => {
     expect(travel).not.toBeNull();
     expect(response.status).toBe(201);
   });
+  it("GET /travels - should answer with status 200 and return an array of trips given a valid auth token", async () => {
+    const userId = seedElements.user.id;
+    const token = jwt.sign({ userId }, config.secretJWT);
+    const response = await agent.get("/travels").set("Authorization", token);
+    expect(response.status).toBe(200);
+    expect(response.body).not.toBeNull();
+  });
 });
