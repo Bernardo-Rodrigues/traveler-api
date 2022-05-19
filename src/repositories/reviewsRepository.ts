@@ -20,8 +20,14 @@ async function find(destinyId: number) {
   });
 }
 
+async function create(data: any) {
+  return await prisma.review.create({
+    data,
+  });
+}
+
 async function truncate() {
   return await prisma.$executeRaw`TRUNCATE TABLE reviews CASCADE`;
 }
 
-export default { listScores, truncate, find };
+export default { listScores, truncate, find, create };
