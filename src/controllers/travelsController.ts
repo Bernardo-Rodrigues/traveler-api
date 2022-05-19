@@ -10,3 +10,11 @@ export async function listUpcomingTrips(req: Request, res: Response) {
 
   res.send(trips);
 }
+
+export async function listTipsByDestination(req: Request, res: Response) {
+  const destinationId = parseInt(req.params.id);
+
+  const tips = await service.listTipsByDestination(destinationId);
+
+  res.send(tips);
+}
