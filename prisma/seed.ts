@@ -74,6 +74,8 @@ export default async function seed() {
     create: {
       userId: user.id,
       destinyId: knownDestiny.id,
+      startDate: faker.date.past(),
+      endDate: faker.date.future(),
     },
   });
 

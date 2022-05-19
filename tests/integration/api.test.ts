@@ -4,7 +4,14 @@ import app from "../../src/app.js";
 import { prisma } from "../../src/database.js";
 import { createUser } from "../factories/usersFactory.js";
 import seed from "../../prisma/seed.js";
-import { Avatar, Destiny, User } from ".prisma/client";
+import {
+  Avatar,
+  Destiny,
+  Favorite,
+  Review,
+  Travel,
+  User,
+} from ".prisma/client";
 import jwt from "jsonwebtoken";
 import config from "../../src/config.js";
 import TestsService from "../../src/services/testsService.js";
@@ -19,6 +26,9 @@ interface SeedElements {
   user: User;
   destiny: Destiny;
   knownDestiny: Destiny;
+  review: Review;
+  travel: Travel;
+  favorite: Favorite;
 }
 
 let seedElements: SeedElements;
@@ -146,6 +156,14 @@ describe("#Api - test suit for api integrations", () => {
     const userId = seedElements.user.id;
     const token = jwt.sign({ userId }, config.secretJWT);
     const response = await agent.get("/travels").set("Authorization", token);
+    expect(response.status).toBe(200);
+    expect(response.body).not.toBeNull();
+  });
+  it("GET /travels/:id/tips - should answer with status 200 and return an array of tips for the current user trip given a valid auth token", async () => {
+    const token = jwt.sign({}, config.secretJWT);
+    const response = await agent
+      .get(`/travels/${seedElements.travel.id}/tips`)
+      .set("Authorization", token);
     expect(response.status).toBe(200);
     expect(response.body).not.toBeNull();
   });
