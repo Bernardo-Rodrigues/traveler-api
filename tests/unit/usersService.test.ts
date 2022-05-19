@@ -1,10 +1,12 @@
 import { jest, describe, it, expect } from "@jest/globals";
 import usersRepository from "../../src/repositories/usersRepository.js";
+import travelsRepository from "../../src/repositories/travelsRepository.js";
 import { conflict, unauthorized } from "../../src/errors/index";
 import usersService from "../../src/services/usersService.js";
 import { createUser } from "../factories/usersFactory.js";
 import { prisma } from "../../src/database.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const service = new usersService();
 
@@ -56,5 +58,22 @@ describe("#Users Service - test suit for edge processing", () => {
     return expect(
       service.login({ email: userData.email, password: userData.password })
     ).rejects.toEqual(unauthorized("User does not exist"));
+  });
+
+  it("#login - should return null for current travel if the user is not traveling", async () => {
+    const userData = createUser();
+    jest
+      .spyOn(usersRepository, "findByEmail")
+      .mockResolvedValue({ ...userData, id: 1, avatar: { imageLink: "" } });
+    jest.spyOn(bcrypt, "compareSync").mockReturnValue(true);
+    jest.spyOn(jwt, "sign").mockReturnValue();
+    jest.spyOn(travelsRepository, "findCurrentTravel").mockResolvedValue(null);
+
+    const result = await service.login({
+      email: userData.email,
+      password: userData.password,
+    });
+
+    expect(result.currentTravel).toBeNull();
   });
 });

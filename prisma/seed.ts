@@ -1,4 +1,12 @@
-import { Avatar, Destiny, Favorite, Review, Travel } from ".prisma/client";
+import {
+  Achievement,
+  AchievementUser,
+  Avatar,
+  Destiny,
+  Favorite,
+  Review,
+  Travel,
+} from ".prisma/client";
 import { prisma } from "../src/database";
 import { faker } from "@faker-js/faker";
 import bcrypt from "bcrypt";
@@ -91,6 +99,41 @@ export default async function seed() {
     },
   });
 
+  const achievement: Achievement = await prisma.achievement.upsert({
+    where: {
+      id: faker.datatype.number(),
+    },
+    update: {},
+    create: {
+      destinyId: destiny.id,
+      name: faker.lorem.words(2),
+      description: faker.lorem.words(5),
+    },
+  });
+
+  const obtainedAchievement: Achievement = await prisma.achievement.upsert({
+    where: {
+      id: faker.datatype.number(),
+    },
+    update: {},
+    create: {
+      destinyId: knownDestiny.id,
+      name: faker.lorem.words(2),
+      description: faker.lorem.words(5),
+    },
+  });
+
+  const achievementUser: AchievementUser = await prisma.achievementUser.upsert({
+    where: {
+      id: faker.datatype.number(),
+    },
+    update: {},
+    create: {
+      userId: user.id,
+      achievementId: obtainedAchievement.id,
+    },
+  });
+
   return {
     avatar,
     destiny,
@@ -99,5 +142,7 @@ export default async function seed() {
     travel,
     favorite,
     knownDestiny,
+    achievement,
+    achievementUser,
   };
 }

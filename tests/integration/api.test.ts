@@ -167,4 +167,13 @@ describe("#Api - test suit for api integrations", () => {
     expect(response.status).toBe(200);
     expect(response.body).not.toBeNull();
   });
+  it("GET /achievements/destinies/:id - should answer with status 201 and return a trip achievement given a valid auth token and destiny id", async () => {
+    const userId = seedElements.user.id;
+    const token = jwt.sign({ userId }, config.secretJWT);
+    const response = await agent
+      .get(`/achievements/destinies/${seedElements.destiny.id}`)
+      .set("Authorization", token);
+    expect(response.status).toBe(201);
+    expect(response.body).not.toBeNull();
+  });
 });
