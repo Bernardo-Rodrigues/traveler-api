@@ -6,7 +6,7 @@ import travelsRepository, {
 } from "../repositories/travelsRepository.js";
 import usersRepository from "../repositories/usersRepository.js";
 import reviewsRepository from "../repositories/reviewsRepository.js";
-import { favorite } from "../controllers/destiniesController.js";
+import achievementsUsersRepository from "../repositories/achievementsUsersRepository.js";
 import dayjs from "dayjs";
 
 export default class DestiniesService {
@@ -34,7 +34,7 @@ export default class DestiniesService {
     const favorited = await favoritesRepository.find(userId, destinationName);
     if (favorited) data.favorited = true;
 
-    const visited = await travelsRepository.find(userId, destiny.id);
+    const visited = await achievementsUsersRepository.find(userId, destiny.id);
     if (visited) data.visited = true;
 
     const score = await reviewsRepository.find(destiny.id);

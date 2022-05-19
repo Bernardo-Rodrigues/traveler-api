@@ -83,7 +83,6 @@ model Destiny {
   reviews Review[]
   favorites Favorite[]
   tips Tip[]
-  trips Trip[]
   descriptions Description[]
 
   @@map("destinies")
@@ -110,37 +109,16 @@ model Tip {
   @@map("tips")
 }
 
-model Trip {
-  id            Int    @id @default(autoincrement())
-  destinyId     Int
-  achievementId Int
-
-  destiny Destiny @relation(fields: [destinyId], references: [id])
-  achievement Achievement @relation(fields: [achievementId], references: [id])
-
-  @@map("trips")
-}
-
 model Achievement {
   id          Int     @id @default(autoincrement())
   name        String  @unique
   description String
+  destinyId   Int?   @unique
+  count       Int?     @unique
 
-  trips Trip[]
-  accumulators Accumulator[]
   achievementsUsers AchievementUser[] 
 
   @@map("achievements")
-}
-
-model Accumulator {
-  id            Int    @id @default(autoincrement())
-  achievementId Int
-  count         Int
-
-  achievement Achievement @relation(fields: [achievementId], references: [id])
-
-  @@map("accumulators")
 }
 
 model AchievementUser {
