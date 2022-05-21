@@ -5,9 +5,14 @@ import validateTokenMiddleware from "../middlewares/validateTokenMiddleware.js";
 const achievementsRouter = Router();
 
 achievementsRouter.get(
-  "/achievements/destinies/:id",
+  "/achievements/destinations/:id",
   validateTokenMiddleware,
   controller.get
+);
+achievementsRouter.get(
+  "/achievements",
+  validateTokenMiddleware,
+  controller.listByUser
 );
 
 export default achievementsRouter;

@@ -17,8 +17,10 @@ model User {
   email       String @unique
   password    String 
   avatarId    Int
+  titleId     Int @default(1)
 
   avatar Avatar @relation(fields: [avatarId], references: [id])
+  title Title @relation(fields: [titleId], references: [id])
 
   travels Travel[]
   reviews Review[]
@@ -28,9 +30,20 @@ model User {
   @@map("users")
 }
 
+model Title {
+  id          Int    @id @default(autoincrement())
+  text        String @unique
+  count Int?
+
+  users User[]
+
+  @@map("titles")
+}
+
 model Avatar {
   id          Int    @id @default(autoincrement())
   imageLink   String @unique
+  tripsCount  Int? 
 
   users User[]
 
@@ -42,42 +55,45 @@ model Travel {
   startDate   DateTime?
   endDate     DateTime?
   userId      Int 
-  destinyId   Int
+  destinationId   Int
 
   user User @relation(fields: [userId], references: [id])
-  destiny Destiny @relation(fields: [destinyId], references: [id])
+  destination Destination @relation(fields: [destinationId], references: [id])
 
   @@map("travels")
 }
 
 model Review {
-  id          Int    @id @default(autoincrement())
-  note        Int
   userId      Int
-  destinyId   Int
+  destinationId   Int
+  note        Int
 
   user User @relation(fields: [userId], references: [id])
-  destiny Destiny @relation(fields: [destinyId], references: [id])
+  destination Destination @relation(fields: [destinationId], references: [id])
+
+  @@unique(fields: [userId, destinationId], name:"reviewRelation")
 
   @@map("reviews")
 }
 
 model Favorite {
   userId      Int
-  destinyId   Int
+  destinationId   Int
 
   user User @relation(fields: [userId], references: [id])
-  destiny Destiny @relation(fields: [destinyId], references: [id])
+  destination Destination @relation(fields: [destinationId], references: [id])
 
-  @@unique(fields: [userId, destinyId], name:"favoriteRelation")
+  @@unique(fields: [userId, destinationId], name:"favoriteRelation")
   @@map("favorites")
 }
 
-model Destiny {
+model Destination {
   id          Int     @id @default(autoincrement())
   name        String  @unique
   imageLink   String  @unique
-  localization String
+  localizationId Int
+
+  localization Localization @relation(fields: [localizationId], references: [id])
 
   travels Travel[]
   reviews Review[]
@@ -88,23 +104,33 @@ model Destiny {
   @@map("destinies")
 }
 
+model Localization {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+
+  destinations Destination[]
+
+  @@map("lacalizations")
+}
+
+
 model Description {
   id          Int     @id @default(autoincrement())
-  destinyId   Int
+  destinationId   Int
   text        String
   type        String  
 
-  destiny Destiny @relation(fields: [destinyId], references: [id])
+  destination Destination @relation(fields: [destinationId], references: [id]) 
 
-  @@map("descriptions")
+  @@map("destinations")
 }
 
 model Tip {
   id          Int    @id @default(autoincrement())
-  destinyId   Int
+  destinationId   Int
   description String
 
-  destiny Destiny @relation(fields: [destinyId], references: [id])
+  destination Destination @relation(fields: [destinationId], references: [id])
 
   @@map("tips")
 }
@@ -113,7 +139,8 @@ model Achievement {
   id          Int     @id @default(autoincrement())
   name        String  @unique
   description String
-  destinyId   Int?   @unique
+  destinationId   Int?   @unique
+  imageLink   String 
   count       Int?     @unique
 
   achievementsUsers AchievementUser[] 
@@ -122,12 +149,14 @@ model Achievement {
 }
 
 model AchievementUser {
-  id            Int    @id @default(autoincrement())
   userId        Int
   achievementId Int
 
+
   user User @relation(fields: [userId], references: [id])
   achievement Achievement @relation(fields: [achievementId], references: [id])
+
+  @@unique(fields: [userId, achievementId], name:"achievementRelation")
 
   @@map("achievementsUsers")
 }

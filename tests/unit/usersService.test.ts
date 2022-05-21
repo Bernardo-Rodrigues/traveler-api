@@ -2,7 +2,7 @@ import { jest, describe, it, expect } from "@jest/globals";
 import usersRepository from "../../src/repositories/usersRepository.js";
 import travelsRepository from "../../src/repositories/travelsRepository.js";
 import { conflict, unauthorized } from "../../src/errors/index";
-import usersService from "../../src/services/usersService.js";
+import usersService from "../../src/services/UsersService.js";
 import { createUser } from "../factories/usersFactory.js";
 import { prisma } from "../../src/database.js";
 import bcrypt from "bcrypt";
@@ -19,7 +19,7 @@ describe("#Users Service - test suit for edge processing", () => {
     const userData = createUser();
     jest
       .spyOn(usersRepository, "findByName")
-      .mockResolvedValue({ ...userData, id: 1 });
+      .mockResolvedValue({ ...userData, id: 1, titleId: 1 });
     jest.spyOn(usersRepository, "findByEmail").mockResolvedValue(null);
 
     return expect(service.register(userData)).rejects.toEqual(
@@ -30,9 +30,12 @@ describe("#Users Service - test suit for edge processing", () => {
   it("#register - should throw a conflict error given an already existing user with the same email", () => {
     const userData = createUser();
     jest.spyOn(usersRepository, "findByName").mockResolvedValue(null);
-    jest
-      .spyOn(usersRepository, "findByEmail")
-      .mockResolvedValue({ ...userData, id: 1, avatar: { imageLink: "" } });
+    jest.spyOn(usersRepository, "findByEmail").mockResolvedValue({
+      ...userData,
+      id: 1,
+      titleId: 1,
+      avatar: { imageLink: "" },
+    });
 
     return expect(service.register(userData)).rejects.toEqual(
       conflict("User already registered")
@@ -50,9 +53,12 @@ describe("#Users Service - test suit for edge processing", () => {
 
   it("#login - should throw an unauthorized error given a wrong password", () => {
     const userData = createUser();
-    jest
-      .spyOn(usersRepository, "findByEmail")
-      .mockResolvedValue({ ...userData, id: 1, avatar: { imageLink: "" } });
+    jest.spyOn(usersRepository, "findByEmail").mockResolvedValue({
+      ...userData,
+      id: 1,
+      titleId: 1,
+      avatar: { imageLink: "" },
+    });
     jest.spyOn(bcrypt, "compareSync").mockReturnValue(false);
 
     return expect(
@@ -62,18 +68,21 @@ describe("#Users Service - test suit for edge processing", () => {
 
   it("#login - should return null for current travel if the user is not traveling", async () => {
     const userData = createUser();
-    jest
-      .spyOn(usersRepository, "findByEmail")
-      .mockResolvedValue({ ...userData, id: 1, avatar: { imageLink: "" } });
+    jest.spyOn(usersRepository, "findByEmail").mockResolvedValue({
+      ...userData,
+      id: 1,
+      titleId: 1,
+      avatar: { imageLink: "" },
+    });
     jest.spyOn(bcrypt, "compareSync").mockReturnValue(true);
     jest.spyOn(jwt, "sign").mockReturnValue();
-    jest.spyOn(travelsRepository, "findCurrentTravel").mockResolvedValue(null);
+    jest.spyOn(travelsRepository, "findCurrentTrip").mockResolvedValue(null);
 
     const result = await service.login({
       email: userData.email,
       password: userData.password,
     });
 
-    expect(result.currentTravel).toBeNull();
+    expect(result.currentTrip).toBeNull();
   });
 });

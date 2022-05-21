@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import AvatarsService from "../services/avatarsService.js";
+import AvatarsService from "../services/AvatarsService.js";
 
 const service = new AvatarsService();
 

@@ -1,8 +1,8 @@
 import { prisma } from "../database.js";
 
-async function listTipsByDestination(destinyId: number) {
+async function listTipsByDestination(destinationId: number) {
   return await prisma.tip.findMany({
-    where: { destinyId },
+    where: { destinationId },
   });
 }
 

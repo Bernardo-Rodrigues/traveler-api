@@ -2,9 +2,11 @@ import {
   Achievement,
   AchievementUser,
   Avatar,
-  Destiny,
+  Destination,
   Favorite,
+  Localization,
   Review,
+  Title,
   Travel,
 } from ".prisma/client";
 import { prisma } from "../src/database";
@@ -21,6 +23,18 @@ export default async function seed() {
       imageLink: faker.internet.url(),
     },
   });
+
+  const title: Title = await prisma.title.upsert({
+    where: {
+      id: 1,
+    },
+    update: {},
+    create: {
+      id: 1,
+      text: faker.lorem.word(),
+    },
+  });
+
   const password = faker.lorem.word();
   const user = await prisma.user.upsert({
     where: {
@@ -32,30 +46,41 @@ export default async function seed() {
       avatarId: avatar.id,
       email: faker.internet.email(),
       password: bcrypt.hashSync(password, 12),
+      titleId: title.id,
     },
   });
   user.password = password;
 
-  const destiny: Destiny = await prisma.destiny.upsert({
+  const localization: Localization = await prisma.localization.upsert({
     where: {
       name: faker.lorem.word(),
     },
     update: {},
     create: {
       name: faker.lorem.word(),
-      localization: faker.lorem.word(),
+    },
+  });
+
+  const destination: Destination = await prisma.destination.upsert({
+    where: {
+      name: faker.lorem.words(2),
+    },
+    update: {},
+    create: {
+      name: faker.lorem.words(2),
+      localizationId: localization.id,
       imageLink: faker.internet.url(),
     },
   });
 
-  const knownDestiny: Destiny = await prisma.destiny.upsert({
+  const knownDestination: Destination = await prisma.destination.upsert({
     where: {
-      name: faker.lorem.word(),
+      name: faker.lorem.words(2),
     },
     update: {},
     create: {
-      name: faker.lorem.word(),
-      localization: faker.lorem.word(),
+      name: faker.lorem.words(2),
+      localizationId: localization.id,
       imageLink: faker.internet.url(),
     },
   });
@@ -64,13 +89,13 @@ export default async function seed() {
     where: {
       favoriteRelation: {
         userId: user.id,
-        destinyId: knownDestiny.id,
+        destinationId: knownDestination.id,
       },
     },
     update: {},
     create: {
       userId: user.id,
-      destinyId: knownDestiny.id,
+      destinationId: knownDestination.id,
     },
   });
 
@@ -81,7 +106,7 @@ export default async function seed() {
     update: {},
     create: {
       userId: user.id,
-      destinyId: knownDestiny.id,
+      destinationId: knownDestination.id,
       startDate: faker.date.past(),
       endDate: faker.date.future(),
     },
@@ -89,12 +114,15 @@ export default async function seed() {
 
   const review: Review = await prisma.review.upsert({
     where: {
-      id: faker.datatype.number(),
+      reviewRelation: {
+        userId: user.id,
+        destinationId: knownDestination.id,
+      },
     },
     update: {},
     create: {
       userId: user.id,
-      destinyId: knownDestiny.id,
+      destinationId: knownDestination.id,
       note: 3,
     },
   });
@@ -105,9 +133,10 @@ export default async function seed() {
     },
     update: {},
     create: {
-      destinyId: destiny.id,
+      destinationId: destination.id,
       name: faker.lorem.words(2),
       description: faker.lorem.words(5),
+      imageLink: faker.internet.url(),
     },
   });
 
@@ -117,15 +146,19 @@ export default async function seed() {
     },
     update: {},
     create: {
-      destinyId: knownDestiny.id,
+      destinationId: knownDestination.id,
       name: faker.lorem.words(2),
       description: faker.lorem.words(5),
+      imageLink: faker.internet.url(),
     },
   });
 
   const achievementUser: AchievementUser = await prisma.achievementUser.upsert({
     where: {
-      id: faker.datatype.number(),
+      achievementRelation: {
+        userId: user.id,
+        achievementId: obtainedAchievement.id,
+      },
     },
     update: {},
     create: {
@@ -136,13 +169,16 @@ export default async function seed() {
 
   return {
     avatar,
-    destiny,
+    destination,
     user,
     review,
     travel,
     favorite,
-    knownDestiny,
+    knownDestination,
+    obtainedAchievement,
     achievement,
     achievementUser,
+    title,
+    localization,
   };
 }

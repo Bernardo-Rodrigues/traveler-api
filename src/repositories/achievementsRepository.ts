@@ -1,9 +1,9 @@
 import { prisma } from "../database.js";
 
-async function find(destinyId: number) {
+async function findByDestination(destinationId: number) {
   return await prisma.achievement.findFirst({
     where: {
-      destinyId,
+      destinationId,
     },
   });
 }
@@ -12,4 +12,4 @@ async function truncate() {
   return await prisma.$executeRaw`TRUNCATE TABLE achievements CASCADE`;
 }
 
-export default { find, truncate };
+export default { findByDestination, truncate };

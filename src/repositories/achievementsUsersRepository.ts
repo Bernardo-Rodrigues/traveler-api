@@ -9,13 +9,24 @@ async function create(data: AchievementUserInsertData) {
   });
 }
 
-async function find(userId: number, destinyId: number) {
+async function find(userId: number, destinationId: number) {
   return await prisma.achievementUser.findFirst({
     where: {
       userId,
       achievement: {
-        destinyId,
+        destinationId,
       },
+    },
+  });
+}
+
+async function listByUser(userId: number) {
+  return await prisma.achievementUser.findMany({
+    where: {
+      userId,
+    },
+    select: {
+      achievement: true,
     },
   });
 }
@@ -24,4 +35,4 @@ async function truncate() {
   return await prisma.$executeRaw`TRUNCATE TABLE achievements CASCADE`;
 }
 
-export default { create, truncate, find };
+export default { create, truncate, find, listByUser };

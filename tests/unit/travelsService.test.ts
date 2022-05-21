@@ -1,6 +1,6 @@
 import { jest, describe, it, expect } from "@jest/globals";
 import usersRepository from "../../src/repositories/usersRepository.js";
-import travelsService from "../../src/services/travelsService.js";
+import travelsService from "../../src/services/TravelsService.js";
 import { prisma } from "../../src/database.js";
 import { notFound } from "../../src/errors/index.js";
 

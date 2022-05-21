@@ -1,13 +1,18 @@
 import { prisma } from "../database.js";
 
 async function list() {
-  return await prisma.destiny.findMany();
+  return await prisma.destination.findMany({
+    include: {
+      localization: true,
+    },
+  });
 }
 
 async function get(name: string) {
-  return await prisma.destiny.findUnique({
+  return await prisma.destination.findUnique({
     include: {
       descriptions: true,
+      localization: true,
     },
     where: {
       name,
@@ -16,7 +21,7 @@ async function get(name: string) {
 }
 
 async function findById(id: number) {
-  return await prisma.destiny.findUnique({
+  return await prisma.destination.findUnique({
     where: {
       id,
     },
@@ -24,7 +29,7 @@ async function findById(id: number) {
 }
 
 async function truncate() {
-  return await prisma.$executeRaw`TRUNCATE TABLE destinies CASCADE`;
+  return await prisma.$executeRaw`TRUNCATE TABLE destinations CASCADE`;
 }
 
 export default { list, get, truncate, findById };
