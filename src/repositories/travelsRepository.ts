@@ -8,7 +8,7 @@ async function listUpcomingTrips(userId: number) {
     select: {
       startDate: true,
       endDate: true,
-      destiny: true,
+      destination: true,
     },
     where: {
       userId,
@@ -22,7 +22,7 @@ async function listUpcomingTrips(userId: number) {
   });
 }
 
-async function findCurrentTravel(userId: number) {
+async function findCurrentTrip(userId: number) {
   return await prisma.travel.findFirst({
     where: {
       userId,
@@ -34,9 +34,10 @@ async function findCurrentTravel(userId: number) {
       },
     },
     include: {
-      destiny: {
+      destination: {
         select: {
           name: true,
+          imageLink: true,
         },
       },
     },
@@ -53,4 +54,4 @@ async function truncate() {
   return await prisma.$executeRaw`TRUNCATE TABLE travels CASCADE`;
 }
 
-export default { truncate, add, listUpcomingTrips, findCurrentTravel };
+export default { truncate, add, listUpcomingTrips, findCurrentTrip };

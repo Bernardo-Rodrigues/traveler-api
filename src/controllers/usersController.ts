@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { UserInsertData } from "../repositories/usersRepository.js";
-import usersService from "../services/usersService.js";
+import UsersService from "../services/UsersService.js";
 
-const service = new usersService();
+const service = new UsersService();
 
 export async function register(req: Request, res: Response) {
   const userData: UserInsertData = req.body;

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import reviewsService from "../services/reviewsService.js";
+import ReviewsService from "../services/ReviewsService.js";
 
-const service = new reviewsService();
+const service = new ReviewsService();
 
 export async function add(req: Request, res: Response) {
   const { userId } = res.locals.user;

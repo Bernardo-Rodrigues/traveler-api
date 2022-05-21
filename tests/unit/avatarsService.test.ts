@@ -1,6 +1,6 @@
 import { jest, describe, it, expect } from "@jest/globals";
 import avatarsRepository from "../../src/repositories/avatarsRepository.js";
-import avatarsService from "../../src/services/avatarsService.js";
+import avatarsService from "../../src/services/AvatarsService.js";
 import { prisma } from "../../src/database.js";
 
 const service = new avatarsService();

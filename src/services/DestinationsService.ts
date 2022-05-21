@@ -1,5 +1,5 @@
 import { badRequest, notFound } from "../errors/index.js";
-import destiniesRepository from "../repositories/destiniesRepository.js";
+import destinationsRepository from "../repositories/destinationsRepository.js";
 import favoritesRepository from "../repositories/favoritesRepository.js";
 import travelsRepository, {
   TravelInsertData,
@@ -9,35 +9,38 @@ import reviewsRepository from "../repositories/reviewsRepository.js";
 import achievementsUsersRepository from "../repositories/achievementsUsersRepository.js";
 import dayjs from "dayjs";
 
-export default class DestiniesService {
+export default class DestinationsService {
   async list() {
     const hashtable = {};
-    const destinies = await destiniesRepository.list();
-    if (destinies.length === 0) throw Error("No destinies found");
+    const destinations = await destinationsRepository.list();
+    if (destinations.length === 0) throw Error("No destinations found");
 
     const scores = await reviewsRepository.listScores();
     scores.forEach((score) => {
-      hashtable[score.destinyId] = score._avg.note;
+      hashtable[score.destinationId] = score._avg.note;
     });
-    const data = destinies.map((destination) => ({
+    const data = destinations.map((destination) => ({
       ...destination,
       score: hashtable[destination.id] ?? 5,
     }));
     return data;
   }
   async find(userId: number, destinationName: string) {
-    const destiny = await destiniesRepository.get(destinationName);
-    if (!destiny) throw notFound("Destiny not found");
+    const destination = await destinationsRepository.get(destinationName);
+    if (!destination) throw notFound("Destination not found");
 
-    const data = { ...destiny, favorited: false, visited: false, score: 5 };
+    const data = { ...destination, favorited: false, visited: false, score: 5 };
 
     const favorited = await favoritesRepository.find(userId, destinationName);
     if (favorited) data.favorited = true;
 
-    const visited = await achievementsUsersRepository.find(userId, destiny.id);
+    const visited = await achievementsUsersRepository.find(
+      userId,
+      destination.id
+    );
     if (visited) data.visited = true;
 
-    const score = await reviewsRepository.find(destiny.id);
+    const score = await reviewsRepository.find(destination.id);
     if (score._avg.note) data.score = score._avg.note;
 
     return data;
@@ -45,16 +48,16 @@ export default class DestiniesService {
   async favorite(userId: number, destinationId: number) {
     const user = await usersRepository.findById(userId);
     if (!user) throw notFound("User not found");
-    const destination = await destiniesRepository.findById(destinationId);
-    if (!destination) throw notFound("Destiny not found");
+    const destination = await destinationsRepository.findById(destinationId);
+    if (!destination) throw notFound("Destination not found");
 
     await favoritesRepository.add(userId, destinationId);
   }
   async unfavorite(userId: number, destinationId: number) {
     const user = await usersRepository.findById(userId);
     if (!user) throw notFound("User not found");
-    const destination = await destiniesRepository.findById(destinationId);
-    if (!destination) throw notFound("Destiny not found");
+    const destination = await destinationsRepository.findById(destinationId);
+    if (!destination) throw notFound("Destination not found");
     await favoritesRepository.remove(userId, destinationId);
   }
   async listFavorites(userId: number) {
@@ -64,25 +67,27 @@ export default class DestiniesService {
     const favorites = await favoritesRepository.listByUser(userId);
     const scores = await reviewsRepository.listScores();
     scores.forEach((score) => {
-      hashtable[score.destinyId] = score._avg.note;
+      hashtable[score.destinationId] = score._avg.note;
     });
-    const destinies = favorites.map((favorite) => ({
-      ...favorite.destiny,
-      score: hashtable[favorite.destiny.id] ?? 5,
+    const destinations = favorites.map((favorite) => ({
+      ...favorite.destination,
+      score: hashtable[favorite.destination.id] ?? 5,
     }));
-    return destinies;
+    return destinations;
   }
   async listTop() {
-    const destinies = await this.list();
-    const topDestinies = destinies.sort((a, b) => b.score - a.score);
+    const destinations = await this.list();
+    const topDestinations = destinations.sort((a, b) => b.score - a.score);
 
-    return topDestinies;
+    return topDestinations;
   }
   async addTravel(data: TravelInsertData) {
     const user = await usersRepository.findById(data.userId);
     if (!user) throw notFound("User not found");
-    const destination = await destiniesRepository.findById(data.destinyId);
-    if (!destination) throw notFound("Destiny not found");
+    const destination = await destinationsRepository.findById(
+      data.destinationId
+    );
+    if (!destination) throw notFound("Destination not found");
 
     const validDates = this.checkDates(data.startDate, data.endDate);
     if (!validDates) throw badRequest("Dates are invalid");

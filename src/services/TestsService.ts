@@ -1,4 +1,4 @@
-import destiniesRepository from "../repositories/destiniesRepository.js";
+import destinationsRepository from "../repositories/destinationsRepository.js";
 import usersRepository from "../repositories/usersRepository.js";
 import avatarsRepository from "../repositories/avatarsRepository.js";
 import favoritesRepository from "../repositories/favoritesRepository.js";
@@ -10,7 +10,7 @@ import achievementsUsersRepository from "../repositories/achievementsUsersReposi
 
 export default class TestsService {
   async trucanteAll() {
-    await destiniesRepository.truncate();
+    await destinationsRepository.truncate();
     await usersRepository.truncate();
     await avatarsRepository.truncate();
     await favoritesRepository.truncate();

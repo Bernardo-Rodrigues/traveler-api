@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import DestinesService from "../services/destinesService.js";
+import DestinationsService from "../services/DestinationsService.js";
 
-const service = new DestinesService();
+const service = new DestinationsService();
 
 export async function list(req: Request, res: Response) {
-  const destinies = await service.list();
+  const destiniations = await service.list();
 
-  res.send(destinies);
+  res.send(destiniations);
 }
 
 export async function listByFavorites(req: Request, res: Response) {
@@ -27,9 +27,9 @@ export async function find(req: Request, res: Response) {
   const { userId } = res.locals.user;
   const { name } = req.params;
 
-  const destinies = await service.find(userId, name);
+  const destiniations = await service.find(userId, name);
 
-  res.send(destinies);
+  res.send(destiniations);
 }
 
 export async function favorite(req: Request, res: Response) {
@@ -52,9 +52,9 @@ export async function unfavorite(req: Request, res: Response) {
 
 export async function addTravel(req: Request, res: Response) {
   const { userId } = res.locals.user;
-  const destinyId = parseInt(req.params.id);
+  const destinationId = parseInt(req.params.id);
 
-  await service.addTravel({ ...req.body, userId, destinyId });
+  await service.addTravel({ ...req.body, userId, destinationId });
 
   res.sendStatus(201);
 }

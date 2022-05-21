@@ -25,13 +25,13 @@ export default class usersService {
     const user = await this.#validateUserLogin(email, password);
     const token = this.#createJWTToken(user.id);
 
-    const currentTravel = await this.#isInTravel(user.id);
+    const currentTrip = await this.#isInTravel(user.id);
 
     return {
       token,
       username: user.username,
       imageLink: user.avatar.imageLink,
-      currentTravel,
+      currentTrip: currentTrip,
     };
   }
 
@@ -52,8 +52,8 @@ export default class usersService {
   }
 
   async #isInTravel(userId: number) {
-    const currentTravel = await travelsRepository.findCurrentTravel(userId);
-    if (!currentTravel) return null;
-    return currentTravel;
+    const currentTrip = await travelsRepository.findCurrentTrip(userId);
+    if (!currentTrip) return null;
+    return currentTrip;
   }
 }

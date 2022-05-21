@@ -1,20 +1,20 @@
 import { prisma } from "../database.js";
 
-async function add(userId: number, destinyId: number) {
+async function add(userId: number, destinationId: number) {
   return await prisma.favorite.create({
     data: {
       userId,
-      destinyId,
+      destinationId,
     },
   });
 }
 
-async function remove(userId: number, destinyId: number) {
+async function remove(userId: number, destinationId: number) {
   return await prisma.favorite.delete({
     where: {
       favoriteRelation: {
         userId,
-        destinyId,
+        destinationId,
       },
     },
   });
@@ -25,7 +25,7 @@ async function find(userId: number, destinationName: string) {
     where: {
       userId,
       AND: {
-        destiny: {
+        destination: {
           name: destinationName,
         },
       },
@@ -38,8 +38,12 @@ async function listByUser(userId: number) {
     where: {
       userId,
     },
-    select: {
-      destiny: true,
+    include: {
+      destination: {
+        include: {
+          localization: true,
+        },
+      },
     },
   });
 }

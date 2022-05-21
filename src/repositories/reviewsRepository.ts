@@ -2,20 +2,20 @@ import { prisma } from "../database.js";
 
 async function listScores() {
   return await prisma.review.groupBy({
-    by: ["destinyId"],
+    by: ["destinationId"],
     _avg: {
       note: true,
     },
   });
 }
 
-async function find(destinyId: number) {
+async function find(destinationId: number) {
   return await prisma.review.aggregate({
     _avg: {
       note: true,
     },
     where: {
-      destinyId,
+      destinationId,
     },
   });
 }

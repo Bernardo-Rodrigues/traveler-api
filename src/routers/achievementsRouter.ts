@@ -9,5 +9,10 @@ achievementsRouter.get(
   validateTokenMiddleware,
   controller.get
 );
+achievementsRouter.get(
+  "/achievements",
+  validateTokenMiddleware,
+  controller.listByUser
+);
 
 export default achievementsRouter;

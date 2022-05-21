@@ -13,8 +13,8 @@ export default class TravelsService {
     return trips;
   }
 
-  async listTipsByDestination(destinyId: number) {
-    const tips = await tipsRepository.listTipsByDestination(destinyId);
+  async listTipsByDestination(destinationId: number) {
+    const tips = await tipsRepository.listTipsByDestination(destinationId);
     return tips;
   }
 }
