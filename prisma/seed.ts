@@ -26,10 +26,11 @@ export default async function seed() {
 
   const title: Title = await prisma.title.upsert({
     where: {
-      text: faker.lorem.word(),
+      id: 1,
     },
     update: {},
     create: {
+      id: 1,
       text: faker.lorem.word(),
     },
   });
@@ -62,11 +63,11 @@ export default async function seed() {
 
   const destination: Destination = await prisma.destination.upsert({
     where: {
-      name: faker.lorem.word(),
+      name: faker.lorem.words(2),
     },
     update: {},
     create: {
-      name: faker.lorem.word(),
+      name: faker.lorem.words(2),
       localizationId: localization.id,
       imageLink: faker.internet.url(),
     },
@@ -74,11 +75,11 @@ export default async function seed() {
 
   const knownDestination: Destination = await prisma.destination.upsert({
     where: {
-      name: faker.lorem.word(),
+      name: faker.lorem.words(2),
     },
     update: {},
     create: {
-      name: faker.lorem.word(),
+      name: faker.lorem.words(2),
       localizationId: localization.id,
       imageLink: faker.internet.url(),
     },

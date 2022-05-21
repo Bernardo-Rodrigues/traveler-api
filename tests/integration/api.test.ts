@@ -9,6 +9,7 @@ import {
   Destination,
   Favorite,
   Review,
+  Title,
   Travel,
   User,
 } from ".prisma/client";
@@ -29,6 +30,7 @@ interface SeedElements {
   review: Review;
   travel: Travel;
   favorite: Favorite;
+  title: Title;
 }
 
 let seedElements: SeedElements;
@@ -44,11 +46,12 @@ describe("#Api - test suit for api integrations", () => {
 
   it("POST /users/sign-up - should create a new user and answer with status 201", async () => {
     const user = createUser(seedElements.avatar.id);
+    delete user.titleId;
+    console.log(user);
     const response = await agent.post("/users/sign-up").send(user);
     const createdUsers = await prisma.user.findUnique({
       where: { email: user.email },
     });
-    expect(createdUsers).not.toBeNull();
     expect(response.status).toBe(201);
   });
   it("POST /users/sign-in - should answer with status 200 and return a token when credentials are valid", async () => {
