@@ -1,6 +1,7 @@
 import { Router } from "express";
 import achievementsRouter from "./achievementsRouter.js";
 import avatarsRouter from "./avatarsRouter.js";
+import continentsRouter from "./continentsRouter.js";
 import destinationsRouter from "./destinationsRouter.js";
 import reviewsRouter from "./reviewsRouter.js";
 import travelsRouter from "./travelsRouter.js";
@@ -14,5 +15,6 @@ router.use(destinationsRouter);
 router.use(travelsRouter);
 router.use(achievementsRouter);
 router.use(reviewsRouter);
+router.use(continentsRouter);
 
 export default router;

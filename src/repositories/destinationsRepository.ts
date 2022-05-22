@@ -8,6 +8,21 @@ async function list() {
   });
 }
 
+async function listByContinent(name: string) {
+  return await prisma.destination.findMany({
+    include: {
+      country: true,
+    },
+    where: {
+      country: {
+        contnent: {
+          name,
+        },
+      },
+    },
+  });
+}
+
 async function getByName(name: string) {
   return await prisma.destination.findUnique({
     include: {
@@ -32,4 +47,4 @@ async function truncate() {
   return await prisma.$executeRaw`TRUNCATE TABLE destinations CASCADE`;
 }
 
-export default { list, getByName, truncate, findById };
+export default { list, getByName, truncate, findById, listByContinent };
