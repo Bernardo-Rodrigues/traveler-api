@@ -42,7 +42,12 @@ export default class DestinationsService {
   }
 
   async #checkContinent(continentName: string) {
-    if (continentName === "undefined" || continentName === "null") return false;
+    if (
+      !continentName ||
+      continentName === "undefined" ||
+      continentName === "null"
+    )
+      return false;
     const continent = await continentsRepository.findByName(continentName);
 
     if (!continent) throw notFound("Continent not found");
