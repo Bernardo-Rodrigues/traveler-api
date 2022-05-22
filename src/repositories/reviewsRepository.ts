@@ -21,8 +21,15 @@ async function find(destinationId: number) {
 }
 
 async function create(data: any) {
-  return await prisma.review.create({
-    data,
+  return await prisma.review.upsert({
+    where: {
+      reviewRelation: {
+        userId: data.userId,
+        destinationId: data.destinationId,
+      },
+    },
+    update: data,
+    create: data,
   });
 }
 

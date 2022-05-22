@@ -9,10 +9,7 @@ travelsRouter.get(
   validateTokenMiddleware,
   controller.listUpcomingTrips
 );
-travelsRouter.get(
-  "/travels/:id/tips",
-  validateTokenMiddleware,
-  controller.listTipsByDestination
-);
+
+travelsRouter.post("/travels", validateTokenMiddleware, controller.addTravel);
 
 export default travelsRouter;

@@ -2,9 +2,10 @@ import {
   Achievement,
   AchievementUser,
   Avatar,
+  Continent,
+  Country,
   Destination,
   Favorite,
-  Localization,
   Review,
   Title,
   Travel,
@@ -12,6 +13,7 @@ import {
 import { prisma } from "../src/database";
 import { faker } from "@faker-js/faker";
 import bcrypt from "bcrypt";
+import dayjs from "dayjs";
 
 export default async function seed() {
   const avatar: Avatar = await prisma.avatar.upsert({
@@ -51,13 +53,24 @@ export default async function seed() {
   });
   user.password = password;
 
-  const localization: Localization = await prisma.localization.upsert({
+  const continent: Continent = await prisma.continent.upsert({
     where: {
       name: faker.lorem.word(),
     },
     update: {},
     create: {
       name: faker.lorem.word(),
+    },
+  });
+
+  const country: Country = await prisma.country.upsert({
+    where: {
+      name: faker.lorem.word(),
+    },
+    update: {},
+    create: {
+      name: faker.lorem.word(),
+      continentId: continent.id,
     },
   });
 
@@ -68,7 +81,7 @@ export default async function seed() {
     update: {},
     create: {
       name: faker.lorem.words(2),
-      localizationId: localization.id,
+      countryId: country.id,
       imageLink: faker.internet.url(),
     },
   });
@@ -80,7 +93,7 @@ export default async function seed() {
     update: {},
     create: {
       name: faker.lorem.words(2),
-      localizationId: localization.id,
+      countryId: country.id,
       imageLink: faker.internet.url(),
     },
   });
@@ -99,7 +112,7 @@ export default async function seed() {
     },
   });
 
-  const travel: Travel = await prisma.travel.upsert({
+  const currentTravel: Travel = await prisma.travel.upsert({
     where: {
       id: faker.datatype.number(),
     },
@@ -107,8 +120,8 @@ export default async function seed() {
     create: {
       userId: user.id,
       destinationId: knownDestination.id,
-      startDate: faker.date.past(),
-      endDate: faker.date.future(),
+      startDate: dayjs().subtract(1, "day").format(),
+      endDate: dayjs().add(1, "day").format(),
     },
   });
 
@@ -172,13 +185,13 @@ export default async function seed() {
     destination,
     user,
     review,
-    travel,
+    currentTravel,
     favorite,
     knownDestination,
     obtainedAchievement,
     achievement,
     achievementUser,
     title,
-    localization,
+    country,
   };
 }

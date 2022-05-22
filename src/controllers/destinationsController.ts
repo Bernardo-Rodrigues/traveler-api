@@ -50,11 +50,10 @@ export async function unfavorite(req: Request, res: Response) {
   res.sendStatus(200);
 }
 
-export async function addTravel(req: Request, res: Response) {
-  const { userId } = res.locals.user;
+export async function listTips(req: Request, res: Response) {
   const destinationId = parseInt(req.params.id);
 
-  await service.addTravel({ ...req.body, userId, destinationId });
+  const tips = await service.listTips(destinationId);
 
-  res.sendStatus(201);
+  res.send(tips);
 }

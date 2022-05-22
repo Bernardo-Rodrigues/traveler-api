@@ -11,10 +11,10 @@ export async function listUpcomingTrips(req: Request, res: Response) {
   res.send(trips);
 }
 
-export async function listTipsByDestination(req: Request, res: Response) {
-  const destinationId = parseInt(req.params.id);
+export async function addTravel(req: Request, res: Response) {
+  const { userId } = res.locals.user;
 
-  const tips = await service.listTipsByDestination(destinationId);
+  await service.addTravel({ ...req.body, userId });
 
-  res.send(tips);
+  res.sendStatus(201);
 }

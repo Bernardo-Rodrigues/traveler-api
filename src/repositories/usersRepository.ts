@@ -4,7 +4,6 @@ import { prisma } from "../database.js";
 export type UserInsertData = Omit<User, "id">;
 
 async function create(user: UserInsertData) {
-  console.log(user);
   const createdUser = await prisma.user.create({
     data: user,
   });

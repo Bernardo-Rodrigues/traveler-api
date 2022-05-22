@@ -1,7 +1,22 @@
 import { prisma } from "../database.js";
 
-async function list() {
-  return await prisma.avatar.findMany();
+async function list(count: number) {
+  return await prisma.avatar.findMany({
+    where: {
+      OR: [
+        {
+          tripsCount: {
+            equals: null,
+          },
+        },
+        {
+          tripsCount: {
+            lte: count,
+          },
+        },
+      ],
+    },
+  });
 }
 
 async function truncate() {
