@@ -7,6 +7,7 @@ import travelsRepository, {
 import usersRepository from "../repositories/usersRepository.js";
 import reviewsRepository from "../repositories/reviewsRepository.js";
 import tipsRepository from "../repositories/tipsRepository.js";
+import continentsRepository from "../repositories/continentsRepository.js";
 import achievementsUsersRepository from "../repositories/achievementsUsersRepository.js";
 import dayjs from "dayjs";
 import { Destination, Favorite } from ".prisma/client";
@@ -21,8 +22,14 @@ export default class DestinationsService {
     return destinationsWithScores;
   }
 
-  async listTop() {
-    const destinations = await this.#findDestinations();
+  async listTop(continentName: string) {
+    const continent = await this.#checkContinent(continentName);
+    let destinations: Destination[];
+
+    if (continent)
+      destinations = await this.#findDestinationsByContinent(continentName);
+    else destinations = await this.#findDestinations();
+
     const destinationsWithScores = await this.#includeScoresInDestinations(
       destinations
     );
@@ -32,6 +39,19 @@ export default class DestinationsService {
     );
 
     return topDestinations;
+  }
+
+  async #checkContinent(continentName: string) {
+    if (
+      !continentName ||
+      continentName === "undefined" ||
+      continentName === "null"
+    )
+      return false;
+    const continent = await continentsRepository.findByName(continentName);
+
+    if (!continent) throw notFound("Continent not found");
+    return true;
   }
 
   async find(userId: number, destinationName: string) {
@@ -86,6 +106,15 @@ export default class DestinationsService {
 
   async #findDestinations() {
     const destinations = await destinationsRepository.list();
+    if (destinations.length === 0) throw Error("No destinations found");
+
+    return destinations;
+  }
+
+  async #findDestinationsByContinent(continentName: string) {
+    const destinations = await destinationsRepository.listByContinent(
+      continentName
+    );
     if (destinations.length === 0) throw Error("No destinations found");
 
     return destinations;

@@ -14,11 +14,7 @@ destinationsRouter.get(
   validateTokenMiddleware,
   controller.listByFavorites
 );
-destinationsRouter.get(
-  "/destinations/top",
-  validateTokenMiddleware,
-  controller.listTop
-);
+destinationsRouter.get("/destinations/top", controller.listTop);
 destinationsRouter.get(
   "/destinations/:name",
   validateTokenMiddleware,

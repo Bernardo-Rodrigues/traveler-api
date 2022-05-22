@@ -18,7 +18,9 @@ export async function listByFavorites(req: Request, res: Response) {
 }
 
 export async function listTop(req: Request, res: Response) {
-  const destinations = await service.listTop();
+  const continent = req.query.continent as string;
+
+  const destinations = await service.listTop(continent);
 
   res.send(destinations);
 }
