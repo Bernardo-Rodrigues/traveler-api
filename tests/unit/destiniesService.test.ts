@@ -1,12 +1,10 @@
 import { jest, describe, it, expect, afterAll } from "@jest/globals";
 import destinationsRepository from "../../src/repositories/destinationsRepository.js";
-import { badRequest, notFound } from "../../src/errors/index";
+import { notFound } from "../../src/errors/index";
 import DestinationsService from "../../src/services/DestinationsService.js";
 import { prisma } from "../../src/database.js";
 import usersRepository from "../../src/repositories/usersRepository.js";
 import { createUser } from "../factories/usersFactory.js";
-import dayjs from "dayjs";
-
 const service = new DestinationsService();
 
 describe("#Destinations Service - test suit for edge processing", () => {
@@ -17,7 +15,7 @@ describe("#Destinations Service - test suit for edge processing", () => {
   it("#list - should throw an error if there is no destination registered", () => {
     jest.spyOn(destinationsRepository, "list").mockResolvedValue([]);
 
-    return expect(service.list()).rejects.toEqual(
+    return expect(service.list("")).rejects.toEqual(
       Error("No destinations found")
     );
   });

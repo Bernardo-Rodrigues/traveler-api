@@ -4,7 +4,9 @@ import DestinationsService from "../services/DestinationsService.js";
 const service = new DestinationsService();
 
 export async function list(req: Request, res: Response) {
-  const destiniations = await service.list();
+  const name = req.query.name as string;
+
+  const destiniations = await service.list(name);
 
   res.send(destiniations);
 }

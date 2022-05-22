@@ -1,20 +1,21 @@
-import { badRequest, notFound } from "../errors/index.js";
+import { notFound } from "../errors/index.js";
 import destinationsRepository from "../repositories/destinationsRepository.js";
 import favoritesRepository from "../repositories/favoritesRepository.js";
-import travelsRepository, {
-  TravelInsertData,
-} from "../repositories/travelsRepository.js";
 import usersRepository from "../repositories/usersRepository.js";
 import reviewsRepository from "../repositories/reviewsRepository.js";
 import tipsRepository from "../repositories/tipsRepository.js";
 import continentsRepository from "../repositories/continentsRepository.js";
 import achievementsUsersRepository from "../repositories/achievementsUsersRepository.js";
-import dayjs from "dayjs";
-import { Destination, Favorite } from ".prisma/client";
+import { Destination } from ".prisma/client";
 
 export default class DestinationsService {
-  async list() {
-    const destinations = await this.#findDestinations();
+  async list(name: string) {
+    let destinations: Destination[];
+
+    if (name === "null" || name === "")
+      destinations = await this.#findDestinations();
+    else destinations = await this.#findDestinationsByName(name);
+
     const destinationsWithScores = await this.#includeScoresInDestinations(
       destinations
     );
@@ -107,6 +108,12 @@ export default class DestinationsService {
   async #findDestinations() {
     const destinations = await destinationsRepository.list();
     if (destinations.length === 0) throw Error("No destinations found");
+
+    return destinations;
+  }
+
+  async #findDestinationsByName(name: string) {
+    const destinations = await destinationsRepository.listByName(name);
 
     return destinations;
   }
