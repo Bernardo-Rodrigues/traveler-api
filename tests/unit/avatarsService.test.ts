@@ -13,6 +13,8 @@ describe("#Avatars Service - test suit for edge processing", () => {
   it("#list - should throw an error if there is no avatars registered", () => {
     jest.spyOn(avatarsRepository, "list").mockResolvedValue([]);
 
-    return expect(service.list()).rejects.toEqual(Error("No avatars found"));
+    return expect(service.list("sign-up", "")).rejects.toEqual(
+      Error("No avatars found")
+    );
   });
 });

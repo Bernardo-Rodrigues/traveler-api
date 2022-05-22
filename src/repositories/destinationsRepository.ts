@@ -3,16 +3,16 @@ import { prisma } from "../database.js";
 async function list() {
   return await prisma.destination.findMany({
     include: {
-      localization: true,
+      country: true,
     },
   });
 }
 
-async function get(name: string) {
+async function getByName(name: string) {
   return await prisma.destination.findUnique({
     include: {
       descriptions: true,
-      localization: true,
+      country: true,
     },
     where: {
       name,
@@ -32,4 +32,4 @@ async function truncate() {
   return await prisma.$executeRaw`TRUNCATE TABLE destinations CASCADE`;
 }
 
-export default { list, get, truncate, findById };
+export default { list, getByName, truncate, findById };

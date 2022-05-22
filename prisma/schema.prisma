@@ -91,9 +91,9 @@ model Destination {
   id          Int     @id @default(autoincrement())
   name        String  @unique
   imageLink   String  @unique
-  localizationId Int
+  countryId Int
 
-  localization Localization @relation(fields: [localizationId], references: [id])
+  country Country @relation(fields: [countryId], references: [id])
 
   travels Travel[]
   reviews Review[]
@@ -104,13 +104,25 @@ model Destination {
   @@map("destinies")
 }
 
-model Localization {
+model Continent {
   id          Int     @id @default(autoincrement())
   name        String  @unique
 
+  contries Country[]
+
+  @@map("continents")
+}
+
+model Country {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  continentId Int
+
+  contnent Continent @relation(fields: [continentId], references: [id])
+
   destinations Destination[]
 
-  @@map("lacalizations")
+  @@map("countries")
 }
 
 

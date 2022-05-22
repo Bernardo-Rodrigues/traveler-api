@@ -41,7 +41,7 @@ async function listByUser(userId: number) {
     include: {
       destination: {
         include: {
-          localization: true,
+          country: true,
         },
       },
     },

@@ -9,10 +9,8 @@ import jwt from "jsonwebtoken";
 export default class usersService {
   async register(userData: UserInsertData) {
     const { username, email, password } = userData;
-    const user =
-      (await userRepository.findByEmail(email)) ||
-      (await userRepository.findByName(username));
-    if (user) throw conflict("User already registered");
+
+    await this.#findUserByNameOrEmail(email, username);
 
     const hashedPassword = bcrypt.hashSync(password, 12);
     await userRepository.create({
@@ -24,7 +22,6 @@ export default class usersService {
   async login({ email, password }) {
     const user = await this.#validateUserLogin(email, password);
     const token = this.#createJWTToken(user.id);
-
     const currentTrip = await this.#isInTravel(user.id);
 
     return {
@@ -33,6 +30,14 @@ export default class usersService {
       imageLink: user.avatar.imageLink,
       currentTrip: currentTrip,
     };
+  }
+
+  async #findUserByNameOrEmail(email: string, username: string) {
+    const user =
+      (await userRepository.findByEmail(email)) ||
+      (await userRepository.findByName(username));
+
+    if (user) throw conflict("User already registered");
   }
 
   async #validateUserLogin(email: string, password: string) {

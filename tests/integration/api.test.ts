@@ -28,7 +28,7 @@ interface SeedElements {
   destination: Destination;
   knownDestination: Destination;
   review: Review;
-  travel: Travel;
+  currentTravel: Travel;
   favorite: Favorite;
   title: Title;
 }
@@ -47,12 +47,12 @@ describe("#Api - test suit for api integrations", () => {
   it("POST /users/sign-up - should create a new user and answer with status 201", async () => {
     const user = createUser(seedElements.avatar.id);
     delete user.titleId;
-    console.log(user);
     const response = await agent.post("/users/sign-up").send(user);
     const createdUsers = await prisma.user.findUnique({
       where: { email: user.email },
     });
     expect(response.status).toBe(201);
+    expect(createdUsers).not.toBeNull();
   });
   it("POST /users/sign-in - should answer with status 200 and return a token when credentials are valid", async () => {
     const user = seedElements.user;
@@ -63,7 +63,7 @@ describe("#Api - test suit for api integrations", () => {
     expect(response.body).not.toBeNull();
   });
   it("GET /avatars - should answer with status 200 and return an array of avatars", async () => {
-    const response = await agent.get("/avatars");
+    const response = await agent.get("/avatars?section=sign-up");
     expect(response.status).toBe(200);
     expect(response.body.length).toBeGreaterThan(0);
   });
@@ -76,7 +76,8 @@ describe("#Api - test suit for api integrations", () => {
     expect(response.body.length).toBeGreaterThan(0);
   });
   it("GET /destinations/:name - should answer with status 200 and return a destination given a valid auth token and destination name", async () => {
-    const token = jwt.sign({}, config.secretJWT);
+    const userId = seedElements.user.id;
+    const token = jwt.sign({ userId }, config.secretJWT);
     const knownDestinationName = seedElements.knownDestination.name;
     const response = await agent
       .get(`/destinations/${knownDestinationName}`)
@@ -139,13 +140,17 @@ describe("#Api - test suit for api integrations", () => {
     expect(favorite).toBeNull();
     expect(response.status).toBe(200);
   });
-  it("POST /destinations/:id/travel - should answer with status 201 and create a travel given a valid auth token, destination id and dates", async () => {
+  it("POST /travels - should answer with status 201 and create a travel given a valid auth token, destination id and dates", async () => {
     const destinationId = seedElements.destination.id;
     const userId = seedElements.user.id;
     const token = jwt.sign({ userId }, config.secretJWT);
-    const body = { startDate: dayjs(), endDate: dayjs().add(1, "day") };
+    const body = {
+      startDate: dayjs().add(1, "year"),
+      endDate: dayjs().add(2, "year"),
+      destinationId,
+    };
     const response = await agent
-      .post(`/destinations/${destinationId}/travel`)
+      .post(`/travels`)
       .set("Authorization", token)
       .send(body);
     const travel = await prisma.travel.findFirst({
@@ -164,10 +169,10 @@ describe("#Api - test suit for api integrations", () => {
     expect(response.status).toBe(200);
     expect(response.body).not.toBeNull();
   });
-  it("GET /travels/:id/tips - should answer with status 200 and return an array of tips for the current user trip given a valid auth token", async () => {
+  it("GET /destinations/:id/tips - should answer with status 200 and return an array of tips for the current user trip given a valid auth token", async () => {
     const token = jwt.sign({}, config.secretJWT);
     const response = await agent
-      .get(`/travels/${seedElements.travel.id}/tips`)
+      .get(`/destinations/${seedElements.destination.id}/tips`)
       .set("Authorization", token);
     expect(response.status).toBe(200);
     expect(response.body).not.toBeNull();

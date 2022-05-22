@@ -34,10 +34,10 @@ destinationsRouter.post(
   validateTokenMiddleware,
   controller.unfavorite
 );
-destinationsRouter.post(
-  "/destinations/:id/travel",
+destinationsRouter.get(
+  "/destinations/:id/tips",
   validateTokenMiddleware,
-  controller.addTravel
+  controller.listTips
 );
 
 export default destinationsRouter;
