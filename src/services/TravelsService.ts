@@ -3,7 +3,6 @@ import travelsRepository, {
   TravelInsertData,
 } from "../repositories/travelsRepository.js";
 import usersRepository from "../repositories/usersRepository.js";
-import tipsRepository from "../repositories/tipsRepository.js";
 import destinationsRepository from "../repositories/destinationsRepository.js";
 import dayjs from "dayjs";
 

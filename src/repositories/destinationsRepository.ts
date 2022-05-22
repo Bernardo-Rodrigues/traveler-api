@@ -8,6 +8,20 @@ async function list() {
   });
 }
 
+async function listByName(name: string) {
+  return await prisma.destination.findMany({
+    include: {
+      country: true,
+    },
+    where: {
+      name: {
+        startsWith: name,
+        mode: "insensitive",
+      },
+    },
+  });
+}
+
 async function listByContinent(name: string) {
   return await prisma.destination.findMany({
     include: {
@@ -47,4 +61,11 @@ async function truncate() {
   return await prisma.$executeRaw`TRUNCATE TABLE destinations CASCADE`;
 }
 
-export default { list, getByName, truncate, findById, listByContinent };
+export default {
+  list,
+  getByName,
+  truncate,
+  findById,
+  listByContinent,
+  listByName,
+};

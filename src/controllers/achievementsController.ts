@@ -7,9 +7,9 @@ export async function get(req: Request, res: Response) {
   const destinationId = parseInt(req.params.id);
   const { userId } = res.locals.user;
 
-  const achievement = await service.get(userId, destinationId);
+  const achievements = await service.get(userId, destinationId);
 
-  res.status(201).send(achievement);
+  res.status(201).send(achievements);
 }
 
 export async function listByUser(req: Request, res: Response) {

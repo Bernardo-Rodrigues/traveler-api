@@ -21,7 +21,20 @@ export default class AchievementsService {
       achievementId: achievement.id,
     });
 
-    return achievement;
+    const destinationsAchievements =
+      await achievementsUsersRepository.listByDestinationsAchievements(userId);
+    const countAchievement = await achievementsRepository.findByCount(
+      destinationsAchievements.length
+    );
+
+    if (countAchievement) {
+      await achievementsUsersRepository.create({
+        userId,
+        achievementId: countAchievement.id,
+      });
+    }
+
+    return [achievement, countAchievement];
   }
 
   async listByUser(userId: number) {

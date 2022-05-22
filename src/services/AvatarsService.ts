@@ -15,10 +15,11 @@ export default class AvatarsService {
   async #setTripsCount(section: string, username: string) {
     if (section === "sign-up") return 0;
     else {
-      await this.#findUserByName(username);
-      const achievements = await achievementsUsersRepository.listByUsername(
-        username
-      );
+      const user = await this.#findUserByName(username);
+      const achievements =
+        await achievementsUsersRepository.listByDestinationsAchievements(
+          user.id
+        );
       return achievements.length;
     }
   }
@@ -32,5 +33,6 @@ export default class AvatarsService {
   async #findUserByName(username: string) {
     const user = await usersRepository.findByName(username);
     if (!user) throw notFound("User not found");
+    return user;
   }
 }

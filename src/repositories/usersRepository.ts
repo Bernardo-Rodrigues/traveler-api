@@ -11,6 +11,19 @@ async function create(user: UserInsertData) {
   return createdUser;
 }
 
+async function edit(userId: number, data: any) {
+  await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      username: data.username,
+      titleId: data.titleId,
+      avatarId: data.avatarId,
+    },
+  });
+}
+
 async function findByEmail(email: string) {
   const user = await prisma.user.findUnique({
     include: {
@@ -58,4 +71,5 @@ export default {
   findByName,
   findById,
   truncate,
+  edit,
 };

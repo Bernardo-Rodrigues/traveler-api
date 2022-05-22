@@ -19,3 +19,12 @@ export async function login(req: Request, res: Response) {
 
   res.send(authData);
 }
+
+export async function edit(req: Request, res: Response) {
+  const { userId } = res.locals.user;
+  const userData = req.body;
+
+  const editData = await service.edit(userData, userId);
+
+  res.send(editData);
+}

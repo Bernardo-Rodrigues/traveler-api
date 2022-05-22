@@ -19,8 +19,16 @@ async function list(count: number) {
   });
 }
 
+async function findById(id: number) {
+  return await prisma.avatar.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
 async function truncate() {
   return await prisma.$executeRaw`TRUNCATE TABLE avatars CASCADE`;
 }
 
-export default { list, truncate };
+export default { list, truncate, findById };
