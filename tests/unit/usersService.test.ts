@@ -35,6 +35,7 @@ describe("#Users Service - test suit for edge processing", () => {
       id: 1,
       titleId: 1,
       avatar: { imageLink: "" },
+      title: { text: "" },
     });
 
     return expect(service.register(userData)).rejects.toEqual(
@@ -58,6 +59,7 @@ describe("#Users Service - test suit for edge processing", () => {
       id: 1,
       titleId: 1,
       avatar: { imageLink: "" },
+      title: { text: "" },
     });
     jest.spyOn(bcrypt, "compareSync").mockReturnValue(false);
 
@@ -73,6 +75,7 @@ describe("#Users Service - test suit for edge processing", () => {
       id: 1,
       titleId: 1,
       avatar: { imageLink: "" },
+      title: { text: "" },
     });
     jest.spyOn(bcrypt, "compareSync").mockReturnValue(true);
     jest.spyOn(jwt, "sign").mockReturnValue();

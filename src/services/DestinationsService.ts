@@ -170,6 +170,7 @@ export default class DestinationsService {
       favorited: false,
       visited: false,
       score: 5,
+      personalRate: 0,
     };
 
     const favorited = await favoritesRepository.find(userId, destination.name);
@@ -180,6 +181,13 @@ export default class DestinationsService {
       destination.id
     );
     if (visited) destinationWithUserInformations.visited = true;
+
+    const personalRate = await reviewsRepository.findByUser(
+      userId,
+      destination.id
+    );
+    if (personalRate)
+      destinationWithUserInformations.personalRate = personalRate.note;
 
     const score = await reviewsRepository.find(destination.id);
     if (score._avg.note)

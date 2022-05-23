@@ -32,6 +32,11 @@ async function findByEmail(email: string) {
           imageLink: true,
         },
       },
+      title: {
+        select: {
+          text: true,
+        },
+      },
     },
     where: {
       email,

@@ -20,6 +20,15 @@ async function find(destinationId: number) {
   });
 }
 
+async function findByUser(userId: number, destinationId: number) {
+  return await prisma.review.findFirst({
+    where: {
+      destinationId,
+      userId,
+    },
+  });
+}
+
 async function create(data: any) {
   return await prisma.review.upsert({
     where: {
@@ -37,4 +46,4 @@ async function truncate() {
   return await prisma.$executeRaw`TRUNCATE TABLE reviews CASCADE`;
 }
 
-export default { listScores, truncate, find, create };
+export default { listScores, truncate, find, create, findByUser };

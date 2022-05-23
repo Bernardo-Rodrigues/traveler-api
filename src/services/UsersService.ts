@@ -30,7 +30,7 @@ export default class usersService {
       token,
       username: user.username,
       imageLink: user.avatar.imageLink,
-      title: "Curious",
+      title: user.title.text,
       currentTrip: currentTrip,
     };
   }
