@@ -42,6 +42,7 @@ async function getByName(name: string) {
     include: {
       descriptions: true,
       country: true,
+      localization: true,
     },
     where: {
       name,
