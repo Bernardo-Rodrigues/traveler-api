@@ -100,8 +100,20 @@ model Destination {
   favorites Favorite[]
   tips Tip[]
   descriptions Description[]
+  localization Localization[]
 
   @@map("destinies")
+}
+
+model Localization {
+  id              Int     @id @default(autoincrement())
+  lat             String
+  lng             String
+  destinationId   Int @unique
+
+  destination Destination @relation(fields: [destinationId], references: [id])
+
+  @@map("localizations")
 }
 
 model Continent {
