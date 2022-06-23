@@ -18,5 +18,6 @@ usersRouter.post(
   controller.login
 );
 usersRouter.post("/users/edit", validateTokenMiddleware, controller.edit);
+usersRouter.post("/user-events/create", controller.createEvent);
 
 export default usersRouter;

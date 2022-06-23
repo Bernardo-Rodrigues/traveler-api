@@ -28,3 +28,9 @@ export async function edit(req: Request, res: Response) {
 
   res.send(editData);
 }
+
+export async function createEvent(req: Request, res: Response) {
+  console.log(req.body);
+
+  res.send(req.body);
+}
