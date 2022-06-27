@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
+import AuthenticatedRequest from "../interfaces/AuthenticatedRequest.js";
 import DestinationsService from "../services/DestinationsService.js";
 
 const service = new DestinationsService();
 
-export async function list(req: Request, res: Response) {
+export async function list(req: AuthenticatedRequest, res: Response) {
   const name = req.query.name as string;
 
   const destiniations = await service.list(name);
@@ -11,24 +12,28 @@ export async function list(req: Request, res: Response) {
   res.send(destiniations);
 }
 
-export async function listByFavorites(req: Request, res: Response) {
-  const { userId } = res.locals.user;
+export async function listByFavorites(
+  req: AuthenticatedRequest,
+  res: Response
+) {
+  const { userId } = req.auth;
 
   const favorites = await service.listFavorites(userId);
 
   res.send(favorites);
 }
 
-export async function listTop(req: Request, res: Response) {
+export async function listTop(req: AuthenticatedRequest, res: Response) {
   const continent = req.query.continent as string;
+  const { userId } = req.auth;
 
-  const destinations = await service.listTop(continent);
+  const destinations = await service.listTop(userId, continent);
 
   res.send(destinations);
 }
 
-export async function find(req: Request, res: Response) {
-  const { userId } = res.locals.user;
+export async function find(req: AuthenticatedRequest, res: Response) {
+  const { userId } = req.auth;
   const { name } = req.params;
 
   const destiniations = await service.find(userId, name);
@@ -36,8 +41,8 @@ export async function find(req: Request, res: Response) {
   res.send(destiniations);
 }
 
-export async function favorite(req: Request, res: Response) {
-  const { userId } = res.locals.user;
+export async function favorite(req: AuthenticatedRequest, res: Response) {
+  const { userId } = req.auth;
   const destinationId = parseInt(req.params.id);
 
   await service.favorite(userId, destinationId);
@@ -45,8 +50,8 @@ export async function favorite(req: Request, res: Response) {
   res.sendStatus(201);
 }
 
-export async function unfavorite(req: Request, res: Response) {
-  const { userId } = res.locals.user;
+export async function unfavorite(req: AuthenticatedRequest, res: Response) {
+  const { userId } = req.auth;
   const destinationId = parseInt(req.params.id);
 
   await service.unfavorite(userId, destinationId);

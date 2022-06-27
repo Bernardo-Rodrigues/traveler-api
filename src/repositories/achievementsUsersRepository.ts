@@ -9,7 +9,7 @@ async function create(data: AchievementUserInsertData) {
   });
 }
 
-async function find(userId: number, destinationId: number) {
+async function find(userId: string, destinationId: number) {
   return await prisma.achievementUser.findFirst({
     where: {
       userId,
@@ -20,7 +20,7 @@ async function find(userId: number, destinationId: number) {
   });
 }
 
-async function listByDestinationsAchievements(userId: number) {
+async function listByDestinationsAchievements(userId: string) {
   return await prisma.achievementUser.findMany({
     where: {
       userId,
@@ -31,7 +31,7 @@ async function listByDestinationsAchievements(userId: number) {
   });
 }
 
-async function listByUserId(userId: number) {
+async function listByUserId(userId: string) {
   return await prisma.achievementUser.findMany({
     where: {
       userId,
@@ -41,20 +41,6 @@ async function listByUserId(userId: number) {
     },
   });
 }
-
-async function listByUsername(username: string) {
-  return await prisma.achievementUser.findMany({
-    where: {
-      user: {
-        username,
-      },
-    },
-    select: {
-      achievement: true,
-    },
-  });
-}
-
 async function truncate() {
   return await prisma.$executeRaw`TRUNCATE TABLE achievements CASCADE`;
 }
@@ -64,6 +50,5 @@ export default {
   truncate,
   find,
   listByUserId,
-  listByUsername,
   listByDestinationsAchievements,
 };

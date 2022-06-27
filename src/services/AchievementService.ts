@@ -5,7 +5,7 @@ import destinationsRepository from "../repositories/destinationsRepository.js";
 import { notFound } from "../errors/index.js";
 
 export default class AchievementsService {
-  async get(userId: number, destinationId: number) {
+  async get(userId: string, destinationId: number) {
     await this.#findUserById(userId);
     await this.#findDestinationById(destinationId);
     const achievement = await this.#findAchievementByDestination(destinationId);
@@ -37,14 +37,14 @@ export default class AchievementsService {
     return [achievement, countAchievement];
   }
 
-  async listByUser(userId: number) {
+  async listByUser(userId: string) {
     await this.#findUserById(userId);
 
     const achievements = await achievementsUsersRepository.listByUserId(userId);
     return achievements;
   }
 
-  async #haveTheAchievement(userId: number, achievementId: number) {
+  async #haveTheAchievement(userId: string, achievementId: number) {
     const alreadyHave = await achievementsUsersRepository.find(
       userId,
       achievementId
@@ -53,7 +53,7 @@ export default class AchievementsService {
     return false;
   }
 
-  async #findUserById(userId: number) {
+  async #findUserById(userId: string) {
     const user = await usersRepository.findById(userId);
     if (!user) throw notFound("User not found");
   }

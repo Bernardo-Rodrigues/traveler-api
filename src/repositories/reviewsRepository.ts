@@ -20,7 +20,7 @@ async function find(destinationId: number) {
   });
 }
 
-async function findByUser(userId: number, destinationId: number) {
+async function findByUser(userId: string, destinationId: number) {
   return await prisma.review.findFirst({
     where: {
       destinationId,

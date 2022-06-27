@@ -12,15 +12,7 @@ datasource db {
 }
 
 model User {
-  id          Int    @id @default(autoincrement())
-  username    String @unique
-  email       String @unique
-  password    String 
-  avatarId    Int
-  titleId     Int @default(1)
-
-  avatar Avatar @relation(fields: [avatarId], references: [id])
-  title Title @relation(fields: [titleId], references: [id])
+  id          String    @id 
 
   travels Travel[]
   reviews Review[]
@@ -30,22 +22,11 @@ model User {
   @@map("users")
 }
 
-model Title {
-  id          Int    @id @default(autoincrement())
-  text        String @unique
-  count Int?
-
-  users User[]
-
-  @@map("titles")
-}
 
 model Avatar {
   id          Int    @id @default(autoincrement())
   imageLink   String @unique
   tripsCount  Int? 
-
-  users User[]
 
   @@map("avatars")
 }
@@ -54,7 +35,7 @@ model Travel {
   id          Int    @id @default(autoincrement())
   startDate   DateTime?
   endDate     DateTime?
-  userId      Int 
+  userId      String 
   destinationId   Int
 
   user User @relation(fields: [userId], references: [id])
@@ -64,7 +45,7 @@ model Travel {
 }
 
 model Review {
-  userId      Int
+  userId      String
   destinationId   Int
   note        Int
 
@@ -77,7 +58,7 @@ model Review {
 }
 
 model Favorite {
-  userId      Int
+  userId      String
   destinationId   Int
 
   user User @relation(fields: [userId], references: [id])
@@ -173,7 +154,7 @@ model Achievement {
 }
 
 model AchievementUser {
-  userId        Int
+  userId        String
   achievementId Int
 
 

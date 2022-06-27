@@ -48,15 +48,6 @@ export default async function seed() {
     ],
   });
 
-  const titles = await prisma.title.createMany({
-    data: [
-      { id: 1, text: "Curious" },
-      { id: 2, text: "Beginner Traveler", count: 3 },
-      { id: 3, text: "Intermediate Traveler", count: 5 },
-      { id: 4, text: "Experient Traveler", count: 10 },
-    ],
-  });
-
   const continents = await prisma.continent.createMany({
     data: [
       { id: 1, name: "South America" },
@@ -386,6 +377,5 @@ export default async function seed() {
     destinations,
     localizations,
     tips,
-    titles,
   });
 }

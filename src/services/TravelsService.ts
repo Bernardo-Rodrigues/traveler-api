@@ -7,11 +7,17 @@ import destinationsRepository from "../repositories/destinationsRepository.js";
 import dayjs from "dayjs";
 
 export default class TravelsService {
-  async listUpcomingTrips(userId: number) {
+  async listUpcomingTrips(userId: string) {
     await this.#findUserById(userId);
 
     const trips = await travelsRepository.listUpcomingTrips(userId);
     return trips;
+  }
+
+  async getCurrentTrip(userId: string) {
+    const currentTrip = await travelsRepository.findCurrentTrip(userId);
+    if (!currentTrip) return null;
+    return currentTrip;
   }
 
   async addTravel(data: TravelInsertData) {
@@ -38,7 +44,7 @@ export default class TravelsService {
     if (!destination) throw notFound("Destination not found");
   }
 
-  async #checkTripsConflict(userId: number, startdDate: Date, endDate: Date) {
+  async #checkTripsConflict(userId: string, startdDate: Date, endDate: Date) {
     const haveConflict = await travelsRepository.findByDate(
       userId,
       startdDate,
@@ -48,7 +54,7 @@ export default class TravelsService {
       throw badRequest("Conflict with dates of different trips");
   }
 
-  async #findUserById(userId: number) {
+  async #findUserById(userId: string) {
     const user = await usersRepository.findById(userId);
     if (!user) throw notFound("User not found");
   }

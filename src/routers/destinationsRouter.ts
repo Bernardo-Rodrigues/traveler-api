@@ -1,38 +1,42 @@
 import { Router } from "express";
 import * as controller from "../controllers/destinationsController.js";
-import validateTokenMiddleware from "../middlewares/validateTokenMiddleware.js";
+import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
 
 const destinationsRouter = Router();
 
 destinationsRouter.get(
   "/destinations",
-  validateTokenMiddleware,
+  ClerkExpressRequireAuth(),
   controller.list
 );
 destinationsRouter.get(
   "/destinations/favorites",
-  validateTokenMiddleware,
+  ClerkExpressRequireAuth(),
   controller.listByFavorites
 );
-destinationsRouter.get("/destinations/top", controller.listTop);
+destinationsRouter.get(
+  "/destinations/top",
+  ClerkExpressRequireAuth(),
+  controller.listTop
+);
 destinationsRouter.get(
   "/destinations/:name",
-  validateTokenMiddleware,
+  ClerkExpressRequireAuth(),
   controller.find
 );
 destinationsRouter.post(
   "/destinations/:id/favorite",
-  validateTokenMiddleware,
+  ClerkExpressRequireAuth(),
   controller.favorite
 );
 destinationsRouter.post(
   "/destinations/:id/unfavorite",
-  validateTokenMiddleware,
+  ClerkExpressRequireAuth(),
   controller.unfavorite
 );
 destinationsRouter.get(
   "/destinations/:id/tips",
-  validateTokenMiddleware,
+  ClerkExpressRequireAuth(),
   controller.listTips
 );
 

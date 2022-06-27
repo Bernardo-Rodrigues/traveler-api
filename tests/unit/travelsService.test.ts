@@ -17,7 +17,7 @@ describe("#Travels Service - test suit for edge processing", () => {
   it("#listUpcomingTrips - should throw a not found error given a non-existing user id", () => {
     jest.spyOn(usersRepository, "findById").mockResolvedValue(null);
 
-    return expect(service.listUpcomingTrips(1)).rejects.toEqual(
+    return expect(service.listUpcomingTrips("a")).rejects.toEqual(
       notFound("User not found")
     );
   });
@@ -27,7 +27,7 @@ describe("#Travels Service - test suit for edge processing", () => {
 
     return expect(
       service.addTravel({
-        userId: 1,
+        userId: "a",
         destinationId: 1,
         startDate: dayjs() as unknown as Date,
         endDate: dayjs().add(1, "day") as unknown as Date,
@@ -38,12 +38,12 @@ describe("#Travels Service - test suit for edge processing", () => {
     const user = createUser();
     jest
       .spyOn(usersRepository, "findById")
-      .mockResolvedValue({ ...user, id: 1, titleId: 1 });
+      .mockResolvedValue({ ...user, id: "a" });
     jest.spyOn(destinationsRepository, "findById").mockResolvedValue(null);
 
     return expect(
       service.addTravel({
-        userId: 1,
+        userId: "a",
         destinationId: 1,
         startDate: dayjs() as unknown as Date,
         endDate: dayjs().add(1, "day") as unknown as Date,
@@ -54,7 +54,7 @@ describe("#Travels Service - test suit for edge processing", () => {
     const user = createUser();
     jest
       .spyOn(usersRepository, "findById")
-      .mockResolvedValue({ ...user, id: 1, titleId: 1 });
+      .mockResolvedValue({ ...user, id: "a" });
     jest
       .spyOn(destinationsRepository, "findById")
       .mockResolvedValue({ id: 1, imageLink: "", countryId: 1, name: "" });
@@ -63,7 +63,7 @@ describe("#Travels Service - test suit for edge processing", () => {
 
     return expect(
       service.addTravel({
-        userId: 1,
+        userId: "a",
         destinationId: 1,
         startDate: dayjs() as unknown as Date,
         endDate: dayjs().add(1, "day") as unknown as Date,

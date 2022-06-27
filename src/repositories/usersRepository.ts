@@ -3,60 +3,25 @@ import { prisma } from "../database.js";
 
 export type UserInsertData = Omit<User, "id">;
 
-async function create(user: UserInsertData) {
+async function create(userId: string) {
   const createdUser = await prisma.user.create({
-    data: user,
+    data: {
+      id: userId,
+    },
   });
 
   return createdUser;
 }
 
-async function edit(userId: number, data: any) {
-  await prisma.user.update({
+async function remove(userId: string) {
+  await prisma.user.delete({
     where: {
       id: userId,
     },
-    data: {
-      username: data.username,
-      titleId: data.titleId,
-      avatarId: data.avatarId,
-    },
   });
 }
 
-async function findByEmail(email: string) {
-  const user = await prisma.user.findUnique({
-    include: {
-      avatar: {
-        select: {
-          imageLink: true,
-        },
-      },
-      title: {
-        select: {
-          text: true,
-        },
-      },
-    },
-    where: {
-      email,
-    },
-  });
-
-  return user;
-}
-
-async function findByName(username: string) {
-  const user = await prisma.user.findUnique({
-    where: {
-      username,
-    },
-  });
-
-  return user;
-}
-
-async function findById(id: number) {
+async function findById(id: string) {
   const user = await prisma.user.findUnique({
     where: {
       id,
@@ -71,10 +36,8 @@ async function truncate() {
 }
 
 export default {
+  remove,
   create,
-  findByEmail,
-  findByName,
   findById,
   truncate,
-  edit,
 };
