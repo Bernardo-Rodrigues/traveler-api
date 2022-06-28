@@ -4,7 +4,7 @@ import destinationsRepository from "../repositories/destinationsRepository.js";
 import { badRequest, notFound } from "../errors/index.js";
 
 export default class ReviewsService {
-  async add(userId: number, destinationId: number, note: number) {
+  async add(userId: string, destinationId: number, note: number) {
     await this.#findUserById(userId);
     await this.#findDestinationById(destinationId);
     this.#checkNote(note);
@@ -12,7 +12,7 @@ export default class ReviewsService {
     await reviewsRepository.create({ userId, destinationId, note });
   }
 
-  async #findUserById(userId: number) {
+  async #findUserById(userId: string) {
     const user = await usersRepository.findById(userId);
     if (!user) throw notFound("User not found");
   }

@@ -1,36 +1,20 @@
 import { Request, Response } from "express";
-import { UserInsertData } from "../repositories/usersRepository.js";
 import UsersService from "../services/UsersService.js";
 
 const service = new UsersService();
 
 export async function register(req: Request, res: Response) {
-  const userData: UserInsertData = req.body;
+  const userId = req.body.data.id;
 
-  await service.register(userData);
+  await service.register(userId);
 
   res.sendStatus(201);
 }
 
-export async function login(req: Request, res: Response) {
-  const userData = req.body;
+export async function remove(req: Request, res: Response) {
+  const userId = req.body.data.id;
 
-  const authData = await service.login(userData);
+  await service.remove(userId);
 
-  res.send(authData);
-}
-
-export async function edit(req: Request, res: Response) {
-  const { userId } = res.locals.user;
-  const userData = req.body;
-
-  const editData = await service.edit(userData, userId);
-
-  res.send(editData);
-}
-
-export async function createEvent(req: Request, res: Response) {
-  console.log(req.body);
-
-  res.send(req.body);
+  res.sendStatus(200);
 }

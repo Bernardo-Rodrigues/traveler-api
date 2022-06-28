@@ -1,17 +1,17 @@
 import { Router } from "express";
 import * as controller from "../controllers/achievementsController.js";
-import validateTokenMiddleware from "../middlewares/validateTokenMiddleware.js";
+import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
 
 const achievementsRouter = Router();
 
 achievementsRouter.get(
   "/achievements/destinations/:id",
-  validateTokenMiddleware,
+  ClerkExpressRequireAuth(),
   controller.get
 );
 achievementsRouter.get(
   "/achievements",
-  validateTokenMiddleware,
+  ClerkExpressRequireAuth(),
   controller.listByUser
 );
 

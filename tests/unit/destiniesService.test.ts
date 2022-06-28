@@ -24,17 +24,17 @@ describe("#Destinations Service - test suit for edge processing", () => {
     const user = createUser();
     jest
       .spyOn(usersRepository, "findById")
-      .mockResolvedValue({ ...user, id: 1, titleId: 1 });
+      .mockResolvedValue({ ...user, id: "a" });
     jest.spyOn(destinationsRepository, "getByName").mockResolvedValue(null);
 
-    return expect(service.find(1, "destination")).rejects.toEqual(
+    return expect(service.find("a", "destination")).rejects.toEqual(
       notFound("Destination not found")
     );
   });
   it("#favorite - should throw a not found error given a non-existing user id", () => {
     jest.spyOn(usersRepository, "findById").mockResolvedValue(null);
 
-    return expect(service.favorite(1, 1)).rejects.toEqual(
+    return expect(service.favorite("a", 1)).rejects.toEqual(
       notFound("User not found")
     );
   });
@@ -42,17 +42,17 @@ describe("#Destinations Service - test suit for edge processing", () => {
     const user = createUser();
     jest
       .spyOn(usersRepository, "findById")
-      .mockResolvedValue({ ...user, id: 1, titleId: 1 });
+      .mockResolvedValue({ ...user, id: "a" });
     jest.spyOn(destinationsRepository, "findById").mockResolvedValue(null);
 
-    return expect(service.favorite(1, 1)).rejects.toEqual(
+    return expect(service.favorite("a", 1)).rejects.toEqual(
       notFound("Destination not found")
     );
   });
   it("#unfavorite - should throw a not found error given a non-existing user id", () => {
     jest.spyOn(usersRepository, "findById").mockResolvedValue(null);
 
-    return expect(service.unfavorite(1, 1)).rejects.toEqual(
+    return expect(service.unfavorite("a", 1)).rejects.toEqual(
       notFound("User not found")
     );
   });
@@ -60,17 +60,17 @@ describe("#Destinations Service - test suit for edge processing", () => {
     const user = createUser();
     jest
       .spyOn(usersRepository, "findById")
-      .mockResolvedValue({ ...user, id: 1, titleId: 1 });
+      .mockResolvedValue({ ...user, id: "a" });
     jest.spyOn(destinationsRepository, "findById").mockResolvedValue(null);
 
-    return expect(service.unfavorite(1, 1)).rejects.toEqual(
+    return expect(service.unfavorite("a", 1)).rejects.toEqual(
       notFound("Destination not found")
     );
   });
   it("#listFavorites - should throw a not found error given a non-existing destination name", () => {
     jest.spyOn(usersRepository, "findById").mockResolvedValue(null);
 
-    return expect(service.listFavorites(1)).rejects.toEqual(
+    return expect(service.listFavorites("a")).rejects.toEqual(
       notFound("User not found")
     );
   });

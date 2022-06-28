@@ -4,7 +4,7 @@ import { prisma } from "../database.js";
 
 export type TravelInsertData = Omit<Travel, "id">;
 
-async function listUpcomingTrips(userId: number) {
+async function listUpcomingTrips(userId: string) {
   return await prisma.travel.findMany({
     select: {
       startDate: true,
@@ -23,7 +23,7 @@ async function listUpcomingTrips(userId: number) {
   });
 }
 
-async function findCurrentTrip(userId: number) {
+async function findCurrentTrip(userId: string) {
   return await prisma.travel.findFirst({
     where: {
       userId,
@@ -45,7 +45,7 @@ async function findCurrentTrip(userId: number) {
   });
 }
 
-async function findByDate(userId: number, startDate: Date, endDate: Date) {
+async function findByDate(userId: string, startDate: Date, endDate: Date) {
   return await prisma.travel.findFirst({
     where: {
       userId,

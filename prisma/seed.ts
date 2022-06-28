@@ -7,12 +7,10 @@ import {
   Destination,
   Favorite,
   Review,
-  Title,
   Travel,
 } from ".prisma/client";
 import { prisma } from "../src/database";
 import { faker } from "@faker-js/faker";
-import bcrypt from "bcrypt";
 import dayjs from "dayjs";
 
 export default async function seed() {
@@ -26,32 +24,15 @@ export default async function seed() {
     },
   });
 
-  const title: Title = await prisma.title.upsert({
-    where: {
-      id: 1,
-    },
-    update: {},
-    create: {
-      id: 1,
-      text: faker.lorem.word(),
-    },
-  });
-
-  const password = faker.lorem.word();
   const user = await prisma.user.upsert({
     where: {
-      username: faker.lorem.word(),
+      id: faker.lorem.word(),
     },
     update: {},
     create: {
-      username: faker.lorem.word(),
-      avatarId: avatar.id,
-      email: faker.internet.email(),
-      password: bcrypt.hashSync(password, 12),
-      titleId: title.id,
+      id: faker.lorem.word(),
     },
   });
-  user.password = password;
 
   const continent: Continent = await prisma.continent.upsert({
     where: {
@@ -191,7 +172,6 @@ export default async function seed() {
     obtainedAchievement,
     achievement,
     achievementUser,
-    title,
     country,
   };
 }

@@ -7,7 +7,6 @@ import travelsRepository from "../repositories/travelsRepository.js";
 import tipsRepository from "../repositories/tipsRepository.js";
 import achievementsRepository from "../repositories/achievementsRepository.js";
 import achievementsUsersRepository from "../repositories/achievementsUsersRepository.js";
-import titlesRepository from "../repositories/titlesRepository.js";
 import countriesRepository from "../repositories/countriesRepository.js";
 import continentsRepository from "../repositories/continentsRepository.js";
 
@@ -22,7 +21,6 @@ export default class TestsService {
     await tipsRepository.truncate();
     await achievementsRepository.truncate();
     await achievementsUsersRepository.truncate();
-    await titlesRepository.truncate();
     await countriesRepository.truncate();
     await continentsRepository.truncate();
   }

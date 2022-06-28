@@ -23,7 +23,8 @@ export default class DestinationsService {
     return destinationsWithScores;
   }
 
-  async listTop(continentName: string) {
+  async listTop(userId: string, continentName: string) {
+    await this.#findUserById(userId);
     const continent = await this.#checkContinent(continentName);
     let destinations: Destination[];
 
@@ -55,7 +56,7 @@ export default class DestinationsService {
     return true;
   }
 
-  async find(userId: number, destinationName: string) {
+  async find(userId: string, destinationName: string) {
     await this.#findUserById(userId);
     const destination = await this.#findDestinationByName(destinationName);
 
@@ -67,19 +68,19 @@ export default class DestinationsService {
     return destinationWithUserInformations;
   }
 
-  async favorite(userId: number, destinationId: number) {
+  async favorite(userId: string, destinationId: number) {
     await this.#findUserById(userId);
     await this.#findDestinationById(destinationId);
 
     await favoritesRepository.add(userId, destinationId);
   }
-  async unfavorite(userId: number, destinationId: number) {
+  async unfavorite(userId: string, destinationId: number) {
     await this.#findUserById(userId);
     await this.#findDestinationById(destinationId);
 
     await favoritesRepository.remove(userId, destinationId);
   }
-  async listFavorites(userId: number) {
+  async listFavorites(userId: string) {
     await this.#findUserById(userId);
 
     const favorites = await favoritesRepository.listByUser(userId);
@@ -95,7 +96,7 @@ export default class DestinationsService {
     return tips;
   }
 
-  async #findUserById(userId: number) {
+  async #findUserById(userId: string) {
     const user = await usersRepository.findById(userId);
     if (!user) throw notFound("User not found");
   }
@@ -164,7 +165,7 @@ export default class DestinationsService {
     return favoritesWithScores;
   }
 
-  async #setExtraInformations(destination: Destination, userId: number) {
+  async #setExtraInformations(destination: Destination, userId: string) {
     const destinationWithUserInformations = {
       ...destination,
       favorited: false,
