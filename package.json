@@ -4,6 +4,9 @@
   "type": "module",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "4.1.1"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/src/server.js",
