@@ -28,6 +28,7 @@
     "@clerk/clerk-sdk-node": "^3.6.2",
     "@prisma/client": "^3.14.0",
     "@types/web": "^0.0.68",
+    "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dayjs": "^1.11.2",
