@@ -15,6 +15,7 @@ jobs:
           envkey_DATABASE_URL: "postgres://postgres:123456@db:5432/traveler_test"
           envkey_SECRET_CRYPTR: "icsfuangfcyu"
           envkey_SECRET_JWT: "gsagdsggfdsfgs"
+          envkey_CLERK_API_KEY: "test_VKJ04MKRzgahxtVWszJEyxyOff5uhnqlu9"
           file_name: .env.test
       - name: Run tests
         run: docker-compose -f docker-compose-test.yml run node_app

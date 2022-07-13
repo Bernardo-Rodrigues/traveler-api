@@ -11,8 +11,6 @@ import {
   Travel,
   User,
 } from ".prisma/client";
-import jwt from "jsonwebtoken";
-import config from "../../src/config.js";
 import TestsService from "../../src/services/TestsService.js";
 import dayjs from "dayjs";
 import { getToken } from "../factories/tokenFactory.js";
