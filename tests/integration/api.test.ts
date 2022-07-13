@@ -146,6 +146,14 @@ describe("#Api - test suit for api integrations", () => {
     expect(response.status).toBe(200);
     expect(response.body).not.toBeNull();
   });
+  it("GET /travels/current - should answer with status 200 and return the current trip given a valid auth token", async () => {
+    const token = await getToken();
+    const response = await agent
+      .get("/travels/current")
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.status).toBe(200);
+    expect(response.body).not.toBeNull();
+  });
   it("GET /destinations/:id/tips - should answer with status 200 and return an array of tips for the current user trip given a valid auth token", async () => {
     const token = await getToken();
     const response = await agent
@@ -154,6 +162,21 @@ describe("#Api - test suit for api integrations", () => {
     expect(response.status).toBe(200);
     expect(response.body).not.toBeNull();
   });
+  it("POST /reviews/destinies/:id - should answer with status 201 given a valid auth token and destination id", async () => {
+    const token = await getToken();
+    const response = await agent
+      .post(`/reviews/destinies/${seedElements.destination.id}`)
+      .send({ note: 5 })
+      .set("Authorization", `Bearer ${token}`);
+    const review = await prisma.review.findFirst({
+      where: {
+        userId: seedElements.user.id,
+        destinationId: seedElements.destination.id,
+      },
+    });
+    expect(response.status).toBe(201);
+    expect(review).not.toBeNull();
+  });
   it("GET /achievements/destinations/:id - should answer with status 201 and return a trip achievement given a valid auth token and destination id", async () => {
     const token = await getToken();
     const response = await agent
@@ -161,5 +184,51 @@ describe("#Api - test suit for api integrations", () => {
       .set("Authorization", `Bearer ${token}`);
     expect(response.status).toBe(201);
     expect(response.body).not.toBeNull();
+  });
+  it("GET /achievements - should answer with status 200 and return an array of achievements given a valid auth token", async () => {
+    const token = await getToken();
+    const response = await agent
+      .get(`/achievements`)
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.status).toBe(200);
+    expect(response.body).not.toBeNull();
+  });
+  it("GET /continents - should answer with status 200 and return an array of continents given a valid auth token", async () => {
+    const token = await getToken();
+    const response = await agent
+      .get(`/continents`)
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.status).toBe(200);
+    expect(response.body).not.toBeNull();
+  });
+  it("POST /user-events/create - should answer with status 201 and create an user in the database", async () => {
+    const body = {
+      data: {
+        id: "a",
+      },
+    };
+    const response = await agent.post(`/user-events/create`).send(body);
+    const user = await prisma.user.findFirst({
+      where: {
+        id: "a",
+      },
+    });
+    expect(user).not.toBeNull();
+    expect(response.status).toBe(201);
+  });
+  it("POST /user-events/delete - should answer with status 200 and delete an user in the database", async () => {
+    const body = {
+      data: {
+        id: "a",
+      },
+    };
+    const response = await agent.post(`/user-events/delete`).send(body);
+    const user = await prisma.user.findFirst({
+      where: {
+        id: "a",
+      },
+    });
+    expect(user).toBeNull();
+    expect(response.status).toBe(200);
   });
 });
