@@ -67,6 +67,7 @@ export default async function seed() {
       { id: 3, name: "France", continentId: 3 },
       { id: 4, name: "Brazil", continentId: 1 },
       { id: 5, name: "Italy", continentId: 3 },
+      { id: 6, name: "Indonesia", continentId: 5 },
     ],
   });
 
@@ -107,6 +108,13 @@ export default async function seed() {
           "https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/destinies/Rome.jpg",
         countryId: 5,
       },
+      {
+        id: 6,
+        name: "Bali",
+        imageLink:
+          "https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/destinies/Bali.jpeg",
+        countryId: 6,
+      },
     ],
   });
 
@@ -141,6 +149,12 @@ export default async function seed() {
         lat: "41.902782",
         lng: "12.496366",
         destinationId: 5,
+      },
+      {
+        id: 6,
+        lat: "-8.275",
+        lng: "115.166",
+        destinationId: 6,
       },
     ],
   });
@@ -219,6 +233,24 @@ export default async function seed() {
         description:
           "There are two ways to visit the Eiffel Tower: you can go up to the top for a breathtaking view, or just go up to the second floor and still have an amazing view from up there!",
       },
+      {
+        id: 13,
+        destinationId: 6,
+        description:
+          "At the center of Bali is Ubud, considered the island's cultural hotspot. Galleries, museums, palaces, hidden temples and typical crafts are what make the city vibrant, in addition to the welcoming people. Adventurers also find many activities there, such as trekking, rafting, climbing the volcano on Mount Batur and even riding an elephant.",
+      },
+      {
+        id: 14,
+        destinationId: 6,
+        description:
+          "The beautiful beaches are concentrated in the south of the island, such as Bukit, Padang Padang, Uluwatu, Jimbaran and Seminyak, the latter two being the most frequented by those who appreciate beach clubs and good restaurants. Comfort seekers look to the luxurious resorts of Nusa Dua, dominated by family-friendly hotels.",
+      },
+      {
+        id: 15,
+        destinationId: 6,
+        description:
+          "One of the main activities for those who travel to the so-called island of the gods, as Bali is also known, is to visit and be dazzled by beautiful and very different temples.",
+      },
     ],
   });
 
@@ -296,6 +328,24 @@ export default async function seed() {
         text: 'In 2019, Rome was the 14th most visited city in the world, with 8.6 million tourists, the third most visited in the European Union, and the most popular tourist destination in Italy. Rome today is one of the most important tourist destinations of the world, due to the incalculable immensity of its archaeological and artistic treasures, as well as for the charm of its unique traditions, the beauty of its panoramic views, and the majesty of its magnificent "villas" (parks).',
         type: "Tourism",
       },
+      {
+        id: 13,
+        destinationId: 6,
+        text: "Bali is an island and province of Indonesia, situated at the western end of the Lesser Sunda Islands archipelago, between the islands of Java (to the west) and Lombok (to the east). roughly in the middle of the south coast.It is known for the cultural manifestations of its people, such as dance, sculpture, painting, leather and metal work and music. Bali is part of the Coral Triangle, a maritime area of ​​extremely high biodiversity, where more than 500 species of coral are found (76% of the number known worldwide).",
+        type: "About",
+      },
+      {
+        id: 14,
+        destinationId: 6,
+        text: 'The name Bali, with which the island was named in the 9th century, derives from the word Wali. Wali or Wari was the term by which the natives, who greatly venerated their gods, called the act of worship. Wali is a Sanskrit word meaning "sacrifice offered to the god", "worship", "worship" or "offering".',
+        type: "Etymology",
+      },
+      {
+        id: 15,
+        destinationId: 6,
+        text: "",
+        type: "Languages",
+      },
     ],
   });
 
@@ -364,6 +414,14 @@ export default async function seed() {
         count: 10,
         imageLink:
           "https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/destinies/Rome.jpg",
+      },
+      {
+        id: 5,
+        name: "Bali",
+        description: "You visited Bali!",
+        destinationId: 6,
+        imageLink:
+          "https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/destinies/Bali.jpeg",
       },
     ],
   });

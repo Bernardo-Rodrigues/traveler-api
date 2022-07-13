@@ -12,6 +12,7 @@ import {
 import { prisma } from "../src/database";
 import { faker } from "@faker-js/faker";
 import dayjs from "dayjs";
+import clerk from "@clerk/clerk-sdk-node";
 
 export default async function seed() {
   const avatar: Avatar = await prisma.avatar.upsert({
@@ -24,13 +25,15 @@ export default async function seed() {
     },
   });
 
+  const users = await clerk.users.getUserList();
+
   const user = await prisma.user.upsert({
     where: {
-      id: faker.lorem.word(),
+      id: users[0].id,
     },
     update: {},
     create: {
-      id: faker.lorem.word(),
+      id: users[0].id,
     },
   });
 
