@@ -416,7 +416,7 @@ export default async function seed() {
           "https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/destinies/Rome.jpg",
       },
       {
-        id: 5,
+        id: 9,
         name: "Bali",
         description: "You visited Bali!",
         destinationId: 6,
