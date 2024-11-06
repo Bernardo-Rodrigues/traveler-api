@@ -1,43 +1,43 @@
 # Traveler
 
-O back-end de um aplicativo full stack com o conceito de site de guias de viagem, onde você pode criar uma conta pessoal e explorar alguns dos destinos mais famosos do mundo, vendo informações sobre cada um e também pode interagir com eles marcando como favorito, reservar uma viagem, receber uma conquista quando já visitou um destino e dar uma nota ao destino.
+The back-end of a full-stack application with the concept of a travel guide site, where you can create a personal account and explore some of the world's most famous destinations. You can see information about each one and also interact with them by marking as a favorite, booking a trip, earning an achievement when you’ve visited a destination, and rating the destination.
 
 <div align="center">
-  <img src="./Readme1.png" width="30%" alt="Imagem1">
-  <img src="./Readme2.png" width="30%" alt="Imagem2">
-  <img src="./Readme3.png" width="30%" alt="Imagem3">
+  <img src="./Readme1.png" width="30%" alt="Image1">
+  <img src="./Readme2.png" width="30%" alt="Image2">
+  <img src="./Readme3.png" width="30%" alt="Image3">
 </div>
 
 <br/>
-Experimente agora em https://traveler.net.br
+Try it now at https://traveler.net.br
 <br/>
-Link para o repositório front-end: https://github.com/Bernardo-Rodrigues/traveler-app
+Link to the front-end repository: https://github.com/Bernardo-Rodrigues/traveler-app
 
-## Sobre
+## About
 
-As principais funcionalidades deste aplicativo são:
+The main features of this app are:
 
-- Crie uma conta pessoal
-- Veja uma lista dos destinos mais famosos do mundo
-- Veja alguns detalhes sobre cada destino
-- Marcar um destino como favorito
-- Veja a lista de seus destinos favoritos
-- Marcar um destino como visitado
-- Receba conquistas para cada destino visitado
-- Dê uma nota para um destino
-- Veja uma tabela de classificação dos destinos mais bem avaliados
-- Reserve uma viagem para um destino
-- Veja sua programação de viagens
-- Receba dicas específicas quando estiver em uma viagem
-- Edite seu perfil
+- Create a personal account
+- View a list of the world’s most famous destinations
+- View details about each destination
+- Mark a destination as a favorite
+- View your list of favorite destinations
+- Mark a destination as visited
+- Earn achievements for each visited destination
+- Rate a destination
+- View a ranking of the highest-rated destinations
+- Book a trip to a destination
+- View your travel schedule
+- Receive specific tips when you’re on a trip
+- Edit your profile
 
-## Por quê?
+## Why?
 
-Este aplicativo foi criado para colocar em prática uma ideia original de um guia de viagem pessoal para ajudar com informações sobre os destinos que quero conhecer, desenvolvido também para praticar a criação de testes automatizados com jest, para colocar o projeto em contêineres docker e usar fluxos de CI /CD.
+This app was created to put into practice an original idea of a personal travel guide to help with information about the destinations I want to visit. It was also developed to practice creating automated tests with Jest, containerizing the project with Docker, and using CI/CD flows.
 
-## Tecnologias
+## Technologies
 
-As seguintes ferramentas e frameworks foram usados na construção do projeto:<br>
+The following tools and frameworks were used to build the project:<br>
 
   ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
   ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
@@ -57,19 +57,17 @@ As seguintes ferramentas e frameworks foram usados na construção do projeto:<b
   ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
   ![Heroku](https://img.shields.io/badge/heroku-%23430098.svg?style=for-the-badge&logo=heroku&logoColor=white)
 
-## Como rodar
+## How to run
 
-1. Clone o repositório
+1. Clone the repository
 
-2. Instale o docker
+2. Install Docker
 ```bash
- sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
-```
-
-3. Rode o container com
+3. Run the container with
 ```bash
 docker-compose up --build
 ```
 
-4. Por final, acesse http://localhost:3000 no seu navegador favorito
+4. Finally, access http://localhost:3000 in your favorite browser
