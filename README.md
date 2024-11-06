@@ -2,9 +2,11 @@
 
 O back-end de um aplicativo full stack com o conceito de site de guias de viagem, onde você pode criar uma conta pessoal e explorar alguns dos destinos mais famosos do mundo, vendo informações sobre cada um e também pode interagir com eles marcando como favorito, reservar uma viagem, receber uma conquista quando já visitou um destino e dar uma nota ao destino.
 
-  ![Imagem1](./Readme1.png)
-  ![Imagem2](./Readme2.png)
-  ![Imagem3](./Readme3.png)
+<div align="center">
+  <img src="./Readme1.png" width="30%" alt="Imagem1">
+  <img src="./Readme2.png" width="30%" alt="Imagem2">
+  <img src="./Readme3.png" width="30%" alt="Imagem3">
+</div>
 
 <br/>
 Experimente agora em https://traveler.net.br
