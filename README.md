@@ -3,9 +3,9 @@
 O back-end de um aplicativo full stack com o conceito de site de guias de viagem, onde você pode criar uma conta pessoal e explorar alguns dos destinos mais famosos do mundo, vendo informações sobre cada um e também pode interagir com eles marcando como favorito, reservar uma viagem, receber uma conquista quando já visitou um destino e dar uma nota ao destino.
 
 <div align='center'>
-  ![Readme1](https://github.com/user-attachments/assets/6953a8a8-378a-4fd0-ae66-e5b187ed414f)
-  ![Readme2](https://github.com/user-attachments/assets/a9d811fd-4735-4d44-89bf-3ff02a0685ee)
-  ![Readme3](https://github.com/user-attachments/assets/177fe0c1-e6e6-4743-abcd-dfeefe6e8dc5)
+  ![Imagem1](./Readme1.png)
+  ![Imagem2](./Readme2.png)
+  ![Imagem3](./Readme3.png)
 </div>
 
 <br/>
