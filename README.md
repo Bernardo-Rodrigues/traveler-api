@@ -64,6 +64,7 @@ The following tools and frameworks were used to build the project:<br>
 2. Install Docker
 ```bash
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+````
 
 3. Run the container with
 ```bash
